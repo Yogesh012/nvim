@@ -1,0 +1,11 @@
+{
+  "workspace": {
+    "ignoreDir": [".luacheckrc"]
+  },
+  "runtime": {
+    "version": "LuaJIT"
+  },
+  "diagnostics": {
+    "globals": ["vim", "use"]
+  }
+}
