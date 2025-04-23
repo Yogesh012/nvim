@@ -25,12 +25,13 @@ function M.setup()
     showtabline = 2,                         -- always show tabs
     smartcase = true,                        -- smart case
     smartindent = true,                      -- make indenting smarter again
+    autoindent = true,
     splitbelow = true,                       -- force all horizontal splits to go below current window
     splitright = true,                       -- force all vertical splits to go to the right of current window
     swapfile = false,                        -- creates a swapfile
     timeoutlen = 1000,                        -- time to wait for a mapped sequence to complete (in milliseconds)
-    undofile = true,                         -- enable persistent undo
 
+    undofile = true,                         -- enable persistent undo
     writebackup = false,                     -- if a file is being edited by another program (or was written to file while editing with another program), it is not allowed to be edited
 
     -- Tabs & indentation
@@ -43,18 +44,30 @@ function M.setup()
     softtabstop = 2,
     textwidth = 100,
 
-  }
+    list = true,
+    listchars = {
+      lead = "·",
+      -- multispace = "·",
+      trail = "•",
+      tab = "│ ",
+      eol = "¬",
+    },
 
-  -- Clipboard for macOS
-  vim.opt.clipboard:append("unnamedplus")
-  -- vim.opt.shortmess:append "c"
-  -- vim.g.python_recommended_style = 0
+  }
 
   -- Setup all the options
   for k, v in pairs(options) do
     vim.opt[k] = v
   end
 
+  -- Clipboard for macOS
+  vim.opt.clipboard:append("unnamedplus")
+  vim.opt.shortmess:append "c"
+  vim.g.python_recommended_style = 0
+
+  vim.cmd([[filetype plugin indent on]])
+
+  vim.cmd([[highlight Whitespace guifg=#3b3b3b]])
 end
 
 return M

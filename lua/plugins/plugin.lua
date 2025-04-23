@@ -137,6 +137,12 @@ function M.setup()
 
     -- Auto-pair
     use("windwp/nvim-autopairs") -- Autopairs, integrates with both cmp and treesitter
+
+    -- Indent line
+    use({
+      "lukas-reineke/indent-blankline.nvim",
+      main = "ibl",
+    })
   end)
 end
 

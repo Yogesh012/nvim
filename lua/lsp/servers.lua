@@ -6,25 +6,30 @@ function M.setup()
   local mason_lspconfig = require("mason-lspconfig")
 
   local capabilities = require("lsp.capabilities")
-  local on_attach = require("lsp.keymaps").on_attach
+  local on_attach = require("lsp.utils").with_on_attach()
 
-  mason.setup {
+  mason.setup({
     ui = {
       icons = {
         package_installed = "✓",
         package_pending = "➜",
-        package_uninstalled = "✗"
-      }
-    }
-  }
+        package_uninstalled = "✗",
+      },
+    },
+  })
 
-  mason_lspconfig.setup {
+  mason_lspconfig.setup({
     ensure_installed = {
-      "lua_ls", "pyright", "jsonls", "bashls", "html", "cssls"
-    }
-  }
+      "lua_ls",
+      "pyright",
+      "jsonls",
+      "bashls",
+      "html",
+      "cssls",
+    },
+  })
 
-  mason_lspconfig.setup_handlers {
+  mason_lspconfig.setup_handlers({
     function(server_name)
       local opts = {
         capabilities = capabilities,
@@ -38,9 +43,8 @@ function M.setup()
       end
 
       lspconfig[server_name].setup(opts)
-    end
-  }
-
+    end,
+  })
 end
 
 return M
