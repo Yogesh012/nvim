@@ -9,6 +9,9 @@ return {
         diagnosticMode = "openFilesOnly",
         useLibraryCodeForTypes = true,
         typeCheckingMode = "basic",
+        diagnosticSeverityOverrides = {
+          reportArgumentType = "none",
+        },
       },
     },
   },

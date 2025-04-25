@@ -22,6 +22,7 @@ function M.setup()
     ensure_installed = {
       "lua_ls",
       "pyright",
+      "ruff",
       "jsonls",
       "bashls",
       "html",

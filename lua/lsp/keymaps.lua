@@ -52,17 +52,18 @@ function M.on_attach(client, bufnr)
     print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
   end, opts)
 
+  -- Toggle virtual text
+  vim.keymap.set("n", "<leader>tt", require("lsp.utils").toggle_virtual_text, { desc = "Toggle Virtual Text" })
+
   -- Format
   vim.keymap.set("n", "gf", function()
     vim.lsp.buf.format({ async = true })
   end, opts)
 
-  vim.cmd [[ command! Format execute 'lua vim.lsp.buf.format({ async = true })' ]]
+  vim.cmd([[ command! Format execute 'lua vim.lsp.buf.format({ async = true })' ]])
 
   -- document highlighting- symbols under cursor are highlighted after a short pause),
   highlight.setup(client, bufnr)
 end
 
 return M
-
-

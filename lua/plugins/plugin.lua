@@ -143,6 +143,10 @@ function M.setup()
       "lukas-reineke/indent-blankline.nvim",
       main = "ibl",
     })
+
+    -- Symbol finder
+    use("nvim-telescope/telescope-symbols.nvim")
+    use({ "ghassan0/telescope-glyph.nvim" })
   end)
 end
 

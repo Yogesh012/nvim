@@ -105,6 +105,8 @@ function M.setup()
     })
   end, { desc = "Grep in Config" })
 
+  map("n", "<leader>fe", tb.symbols)
+
   -- Cycle through buffers
   map("n", "<Tab>", ":BufferLineCycleNext<CR>", opts)
   map("n", "<S-Tab>", ":BufferLineCyclePrev<CR>", opts)
@@ -117,10 +119,10 @@ function M.setup()
   map("n", "<leader>bp", ":BufferLinePick<CR>", opts)
 
   -- Git
-  map("n", "<leader>gc", tb.git_commits, { desc = "Git Commits" })
-  map("n", "<leader>gb", tb.git_branches, { desc = "Git Branches" })
-  map("n", "<leader>gs", tb.git_status, { desc = "Git Status" })
-  map("n", "<leader>gS", tb.git_stash, { desc = "Stash" })
+  -- map("n", "<leader>gc", tb.git_commits, { desc = "Git Commits" })
+  -- map("n", "<leader>gB", tb.git_branches, { desc = "Git Branches" })
+  -- map("n", "<leader>gs", tb.git_status, { desc = "Git Status" })
+  -- map("n", "<leader>gS", tb.git_stash, { desc = "Stash" })
 
   -- Move text up and down
   map("n", "<M-j>", "<Esc>:m .+1<CR>==", opts)
@@ -133,6 +135,23 @@ function M.setup()
 
   map("x", "<M-j>", ":move '>+1<CR>gv-gv", opts)
   map("x", "<M-k>", ":move '<-2<CR>gv-gv", opts)
+
+  -- Icon picker
+  -- vim.keymap.set("n", "<leader>ui", function()
+  --   require("plugins.telescope.icon_picker").pick_devicons()
+  -- end, { desc = "Pick NerdFont Icon" })
+
+  -- vim.keymap.set("i", "<C-l>", function()
+  --   return vim.fn["codeium#Accept"]()
+  -- end, { expr = true, silent = true })
+
+  -- vim.keymap.set("i", "<C-]>", function()
+  --   return vim.fn
+  -- end, { expr = true })
+
+  -- vim.keymap.set("i", "<C-[>", function()
+  --   return vim.fn["codeium#CycleCompletions"](-1)
+  -- end, { expr = true })
 end
 
 return M

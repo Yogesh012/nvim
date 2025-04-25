@@ -1,6 +1,7 @@
 local M = {}
 
 function M.setup()
+  local tb = require("telescope.builtin")
   -- Set custom highlights (optional)
   local function set_git_highlights()
     local hl = vim.api.nvim_set_hl
@@ -48,7 +49,7 @@ function M.setup()
     -- },
 
     attach_to_untracked = true,
-    current_line_blame = true,
+    current_line_blame = false,
     current_line_blame_opts = {
       virt_text = true,
       virt_text_pos = "eol",
@@ -72,6 +73,10 @@ function M.setup()
       -- map("n", "<leader>gp", gs.preview_hunk, "Preview Hunk")
       map("n", "<leader>gb", gs.toggle_current_line_blame, "Toggle Blame")
       map("n", "<leader>gd", gs.diffthis, "Git Diff")
+      map("n", "<leader>gc", tb.git_commits, "Git Commits")
+      map("n", "<leader>gB", tb.git_branches, "Git Branches")
+      map("n", "<leader>gs", tb.git_status, "Git Status")
+      map("n", "<leader>gS", tb.git_stash, "Stash")
     end,
   })
 end

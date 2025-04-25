@@ -75,7 +75,9 @@ function M.setup()
           ["<C-q>"] = actions.send_to_qflist + actions.open_qflist,
           ["<M-q>"] = actions.send_selected_to_qflist + actions.open_qflist,
           ["<Tab>"] = tab,
+          ["f"] = tab,
           ["<S-Tab>"] = shift_tab,
+          ["d"] = shift_tab,
           ["<Down>"] = actions.preview_scrolling_down,
           ["<Up>"] = actions.preview_scrolling_up,
           ["j"] = actions.preview_scrolling_down,
@@ -104,6 +106,50 @@ function M.setup()
           },
         },
       },
+
+      git_status = {
+        mappings = {
+          i = {
+            ["f"] = tab,
+            ["<S-Tab>"] = shift_tab,
+            ["d"] = shift_tab,
+          },
+          n = {
+            ["f"] = tab,
+            ["<S-Tab>"] = shift_tab,
+            ["d"] = shift_tab,
+          },
+        },
+
+        -- entry_maker = function(entry)
+        --   local raw = entry
+        --   local status, file = raw:match("^(..)%s+(.*)")
+        --
+        --   local icons = {
+        --     ["M"] = "",
+        --     ["A"] = "",
+        --     ["R"] = "",
+        --     ["D"] = "",
+        --     ["??"] = "",
+        --   }
+        --
+        --   status = status or "??"
+        --   file = file or raw
+        --
+        --   local indicator = "✗"
+        --   if status:match("[MARC]") then
+        --     indicator = "✓"
+        --   end
+        --
+        --   return {
+        --     value = file,
+        --     ordinal = file,
+        --     display = string.format("%s  %s", indicator, file),
+        --     filename = file,
+        --     status = status,
+        --   }
+        -- end,
+      },
     },
 
     extensions = {
@@ -121,11 +167,24 @@ function M.setup()
       ".git/",
       "__pycache__",
     },
+
+    glyph = {
+      action = function(glyph)
+        -- argument glyph is a table.
+        -- {name="", value="", category="", description=""}
+
+        vim.fn.setreg("*", glyph.value)
+        print([[Press p or "*p to paste this glyph]] .. glyph.value)
+
+        -- insert glyph when picked
+        -- vim.api.nvim_put({ glyph.value }, 'c', false, true)
+      end,
+    },
   })
 
   -- Load extensions
   pcall(telescope.load_extension, "fzf")
-  -- pcall(telescope.load_extension, "media_files")
+  pcall(telescope.load_extension, "glyph")
 end
 
 return M
