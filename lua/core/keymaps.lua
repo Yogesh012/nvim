@@ -110,19 +110,11 @@ function M.setup()
   -- Cycle through buffers
   map("n", "<Tab>", ":BufferLineCycleNext<CR>", opts)
   map("n", "<S-Tab>", ":BufferLineCyclePrev<CR>", opts)
-  -- map("n", "<leader>l", ":BufferLineCycleNext<CR>", opts)
-  -- map("n", "<leader>h", ":BufferLineCyclePrev<CR>", opts)
   -- map("n", "<S-l>", ":bnext<CR>", opts)
   -- map("n", "<S-h>", ":bprevious<CR>", opts)
 
   -- Pick buffer
   map("n", "<leader>bp", ":BufferLinePick<CR>", opts)
-
-  -- Git
-  -- map("n", "<leader>gc", tb.git_commits, { desc = "Git Commits" })
-  -- map("n", "<leader>gB", tb.git_branches, { desc = "Git Branches" })
-  -- map("n", "<leader>gs", tb.git_status, { desc = "Git Status" })
-  -- map("n", "<leader>gS", tb.git_stash, { desc = "Stash" })
 
   -- Move text up and down
   map("n", "<M-j>", "<Esc>:m .+1<CR>==", opts)
@@ -141,17 +133,17 @@ function M.setup()
   --   require("plugins.telescope.icon_picker").pick_devicons()
   -- end, { desc = "Pick NerdFont Icon" })
 
-  -- vim.keymap.set("i", "<C-l>", function()
-  --   return vim.fn["codeium#Accept"]()
-  -- end, { expr = true, silent = true })
+  -- Codium
+  vim.keymap.set("n", "<leader>ac", function()
+    require("core.aiconfig").toggle_codium()
+  end, { desc = "Toggle Codeium AI" })
 
-  -- vim.keymap.set("i", "<C-]>", function()
-  --   return vim.fn
-  -- end, { expr = true })
+  -- Gen (Ollama)
+  vim.keymap.set({ "n", "v" }, "<leader>ai", ":Gen<CR>")
 
-  -- vim.keymap.set("i", "<C-[>", function()
-  --   return vim.fn["codeium#CycleCompletions"](-1)
-  -- end, { expr = true })
+  vim.keymap.set("n", "<leader>am", function()
+    require("core.ai_picker").pick_model()
+  end, { desc = "Switch AI Model (Ollama)" })
 end
 
 return M

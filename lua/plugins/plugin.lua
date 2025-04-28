@@ -147,6 +147,19 @@ function M.setup()
     -- Symbol finder
     use("nvim-telescope/telescope-symbols.nvim")
     use({ "ghassan0/telescope-glyph.nvim" })
+
+    -- AI tools
+    -- Codium
+    use({
+      "Exafunction/windsurf.nvim",
+      requires = {
+        "nvim-lua/plenary.nvim",
+        "hrsh7th/nvim-cmp",
+      },
+    })
+
+    -- Ollama
+    use({ "David-Kunz/gen.nvim" })
   end)
 end
 

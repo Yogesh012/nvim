@@ -12,31 +12,31 @@ function M.setup()
   require("luasnip.loaders.from_vscode").lazy_load()
 
   local kind_icons = {
-    Text = "",
-    Method = "m",
-    Function = "",
+    Text = "𝐓ᵀ",
+    Method = "ₘ𝐌",
+    Function = "󰡱",
     Constructor = "",
     Field = "",
-    Variable = "",
-    Class = "",
+    Variable = "𝑽",
+    Class = "𝑪",
     Interface = "",
     Module = "",
     Property = "",
     Unit = "",
-    Value = "",
+    Value = "ᵥ∨",
     Enum = "",
     Keyword = "",
     Snippet = "",
-    Color = "",
-    File = "",
+    Color = "",
+    File = "",
     Reference = "",
-    Folder = "",
+    Folder = "",
     EnumMember = "",
-    Constant = "",
+    Constant = "𝜫",
     Struct = "",
     Event = "",
-    Operator = "",
-    TypeParameter = "",
+    Operator = "∫",
+    TypeParameter = "𝞣𝙋",
   }
 
   cmp.setup({
@@ -58,6 +58,7 @@ function M.setup()
       ["<C-f>"] = cmp.mapping.scroll_docs(4),
       ["<C-Space>"] = cmp.mapping.complete(),
       ["<C-e>"] = cmp.mapping.abort(),
+      ["<esc>"] = cmp.mapping.abort(),
       ["<CR>"] = cmp.mapping.confirm({ select = false }),
 
       ["<Tab>"] = cmp.mapping(function(fallback)
@@ -89,6 +90,7 @@ function M.setup()
         vim_item.kind = string.format("%s", kind_icons[vim_item.kind])
         vim_item.menu = ({
           nvim_lsp = "[LSP]",
+          codeium = "[COD]",
           nvim_lua = "[Lua]",
           luasnip = "[Snip]",
           buffer = "[Buf]",
@@ -100,9 +102,10 @@ function M.setup()
 
     sources = cmp.config.sources({
       { name = "nvim_lsp", priority = 1000 },
-      { name = "luasnip",  priority = 750 },
-      { name = "buffer",   priority = 500 },
-      { name = "path",     priority = 250 },
+      { name = "codeium", priority = 900 },
+      { name = "luasnip", priority = 750 },
+      { name = "buffer", priority = 500 },
+      { name = "path", priority = 250 },
     }),
 
     sorting = {
@@ -129,18 +132,18 @@ function M.setup()
   cmp.setup.cmdline("/", {
     mapping = cmp.mapping.preset.cmdline(),
     sources = {
-      { name = "buffer" }
-    }
+      { name = "buffer" },
+    },
   })
 
   -- `:` for path + cmdline
   cmp.setup.cmdline(":", {
     mapping = cmp.mapping.preset.cmdline(),
     sources = cmp.config.sources({
-      { name = "path" }
+      { name = "path" },
     }, {
-      { name = "cmdline" }
-    })
+      { name = "cmdline" },
+    }),
   })
 end
 

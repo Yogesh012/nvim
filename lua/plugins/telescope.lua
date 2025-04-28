@@ -65,6 +65,7 @@ function M.setup()
           ["<C-l>"] = actions.complete_tag,
           ["<C-_>"] = actions.which_key,
           ["<M-p>"] = action_layout.toggle_preview,
+          ["<esc>"] = actions.close,
         },
         n = {
           ["<esc>"] = actions.close,

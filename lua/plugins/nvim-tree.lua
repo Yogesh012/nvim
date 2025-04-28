@@ -20,18 +20,31 @@ function M.setup()
 
   require("nvim-tree").setup({
     on_attach = on_attach,
+
     view = {
       width = 30,
       side = "left",
       preserve_window_proportions = true,
     },
 
+    diagnostics = {
+      enable = true,
+      show_on_dirs = false,
+      icons = {
+        hint = "",
+        info = "",
+        warning = "",
+        error = "",
+      },
+    },
+
     renderer = {
       highlight_git = true,
-      root_folder_label = false,      --  hide root folder
+      root_folder_label = false, --  hide root folder
       highlight_opened_files = "all", -- "none" | "icon" | "name" | "all"
+
       indent_markers = {
-        enable = false,
+        enable = true,
         inline_arrows = true,
         icons = {
           corner = "└",
@@ -41,6 +54,7 @@ function M.setup()
           none = " ",
         },
       },
+
       icons = {
         webdev_colors = true,
         git_placement = "before", -- "before" | "after" (after the file/folders icons)| "signcolumn"
@@ -52,10 +66,12 @@ function M.setup()
           file = true,
           folder_arrow = true,
         },
+
         glyphs = {
           default = "",
           symlink = "",
           bookmark = "",
+
           git = {
             unstaged = "",
             staged = "S",
@@ -65,6 +81,7 @@ function M.setup()
             untracked = "U",
             ignored = "◌",
           },
+
           folder = {
             default = "",
             open = "",

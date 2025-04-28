@@ -137,6 +137,11 @@ _G.packer_plugins = {
     path = "/Users/yogeshsharma/.local/share/nvim/site/pack/packer/start/friendly-snippets",
     url = "https://github.com/rafamadriz/friendly-snippets"
   },
+  ["gen.nvim"] = {
+    loaded = true,
+    path = "/Users/yogeshsharma/.local/share/nvim/site/pack/packer/start/gen.nvim",
+    url = "https://github.com/David-Kunz/gen.nvim"
+  },
   ["gitsigns.nvim"] = {
     loaded = true,
     path = "/Users/yogeshsharma/.local/share/nvim/site/pack/packer/start/gitsigns.nvim",
@@ -232,10 +237,20 @@ _G.packer_plugins = {
     path = "/Users/yogeshsharma/.local/share/nvim/site/pack/packer/start/telescope-fzf-native.nvim",
     url = "https://github.com/nvim-telescope/telescope-fzf-native.nvim"
   },
+  ["telescope-glyph.nvim"] = {
+    loaded = true,
+    path = "/Users/yogeshsharma/.local/share/nvim/site/pack/packer/start/telescope-glyph.nvim",
+    url = "https://github.com/ghassan0/telescope-glyph.nvim"
+  },
   ["telescope-project.nvim"] = {
     loaded = true,
     path = "/Users/yogeshsharma/.local/share/nvim/site/pack/packer/start/telescope-project.nvim",
     url = "https://github.com/nvim-telescope/telescope-project.nvim"
+  },
+  ["telescope-symbols.nvim"] = {
+    loaded = true,
+    path = "/Users/yogeshsharma/.local/share/nvim/site/pack/packer/start/telescope-symbols.nvim",
+    url = "https://github.com/nvim-telescope/telescope-symbols.nvim"
   },
   ["telescope.nvim"] = {
     loaded = true,
@@ -247,6 +262,11 @@ _G.packer_plugins = {
     loaded = true,
     path = "/Users/yogeshsharma/.local/share/nvim/site/pack/packer/start/tokyonight.nvim",
     url = "https://github.com/folke/tokyonight.nvim"
+  },
+  ["windsurf.nvim"] = {
+    loaded = true,
+    path = "/Users/yogeshsharma/.local/share/nvim/site/pack/packer/start/windsurf.nvim",
+    url = "https://github.com/Exafunction/windsurf.nvim"
   }
 }
 
