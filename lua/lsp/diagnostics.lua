@@ -47,15 +47,17 @@ function M.setup()
       local bufnr = args.buf
       for _, d in ipairs(vim.diagnostic.get(bufnr)) do
         if d.source == "ruff" then
-          local hl_group = "DiagnosticRuff" .. d.code:sub(1, 1)
-          vim.api.nvim_set_hl(0, hl_group, { fg = "#999999" }) -- default to gray
+          if d.code and type(d.code) == "string" then
+            local hl_group = "DiagnosticRuff" .. d.code:sub(1, 1)
+            vim.api.nvim_set_hl(0, hl_group, { fg = "#999999" }) -- default to gray
 
-          if d.code:match("^F") then
-            vim.api.nvim_set_hl(0, hl_group, { fg = "#ff5f5f" }) -- red-ish
-          elseif d.code:match("^E") then
-            vim.api.nvim_set_hl(0, hl_group, { fg = "#fabd2f" }) -- yellow-ish
-          elseif d.code:match("^I") then
-            vim.api.nvim_set_hl(0, hl_group, { fg = "#83a598" }) -- blue-ish
+            if d.code:match("^F") then
+              vim.api.nvim_set_hl(0, hl_group, { fg = "#ff5f5f" }) -- red-ish
+            elseif d.code:match("^E") then
+              vim.api.nvim_set_hl(0, hl_group, { fg = "#fabd2f" }) -- yellow-ish
+            elseif d.code:match("^I") then
+              vim.api.nvim_set_hl(0, hl_group, { fg = "#83a598" }) -- blue-ish
+            end
           end
         end
       end

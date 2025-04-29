@@ -1,6 +1,10 @@
 local M = {}
 
 function M.setup()
+  if not vim.g.codeium then
+    return ""
+  end
+
   require("codeium").setup({
     enable_tab_completion = false,
     -- You can hook this into cmp if you're using it
