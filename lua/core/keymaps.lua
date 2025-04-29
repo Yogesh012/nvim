@@ -135,7 +135,7 @@ function M.setup()
 
   -- Codium
   vim.keymap.set("n", "<leader>ac", function()
-    require("core.aiconfig").toggle_codium()
+    require("core.ai_config").toggle_codium()
   end, { desc = "Toggle Codeium AI" })
 
   -- Gen (Ollama)
