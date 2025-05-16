@@ -95,6 +95,7 @@ function M.setup()
           luasnip = "[Snip]",
           buffer = "[Buf]",
           path = "[Path]",
+          render_markdown = "[MD]",
         })[entry.source.name]
         return vim_item
       end,
@@ -106,6 +107,7 @@ function M.setup()
       { name = "luasnip", priority = 750 },
       { name = "buffer", priority = 500 },
       { name = "path", priority = 250 },
+      { name = "render-markdown", proirity = 350 },
     }),
 
     sorting = {

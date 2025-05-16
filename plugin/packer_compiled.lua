@@ -119,6 +119,11 @@ _G.packer_plugins = {
     path = "/Users/yogeshsharma/.local/share/nvim/site/pack/packer/start/cmp_luasnip",
     url = "https://github.com/saadparwaiz1/cmp_luasnip"
   },
+  ["codecompanion.nvim"] = {
+    loaded = true,
+    path = "/Users/yogeshsharma/.local/share/nvim/site/pack/packer/start/codecompanion.nvim",
+    url = "https://github.com/olimorris/codecompanion.nvim"
+  },
   ["conform.nvim"] = {
     loaded = true,
     path = "/Users/yogeshsharma/.local/share/nvim/site/pack/packer/start/conform.nvim",
@@ -232,6 +237,13 @@ _G.packer_plugins = {
     path = "/Users/yogeshsharma/.local/share/nvim/site/pack/packer/start/rainbow-delimiters.nvim",
     url = "https://github.com/HiPhish/rainbow-delimiters.nvim"
   },
+  ["render-markdown.nvim"] = {
+    load_after = {},
+    loaded = true,
+    needs_bufread = false,
+    path = "/Users/yogeshsharma/.local/share/nvim/site/pack/packer/opt/render-markdown.nvim",
+    url = "https://github.com/MeanderingProgrammer/render-markdown.nvim"
+  },
   ["telescope-fzf-native.nvim"] = {
     loaded = true,
     path = "/Users/yogeshsharma/.local/share/nvim/site/pack/packer/start/telescope-fzf-native.nvim",
@@ -275,6 +287,11 @@ time([[Defining packer_plugins]], false)
 time([[Config for tokyonight.nvim]], true)
 try_loadstring("\27LJ\2\n:\0\0\3\0\3\0\0056\0\0\0009\0\1\0'\2\2\0B\0\2\1K\0\1\0\27colorscheme tokyonight\bcmd\bvim\0", "config", "tokyonight.nvim")
 time([[Config for tokyonight.nvim]], false)
+-- Load plugins in order defined by `after`
+time([[Sequenced loading]], true)
+vim.cmd [[ packadd nvim-treesitter ]]
+vim.cmd [[ packadd render-markdown.nvim ]]
+time([[Sequenced loading]], false)
 
 -- Command lazy-loads
 time([[Defining lazy-load commands]], true)

@@ -2,8 +2,9 @@ local M = {}
 
 M.ai = {
   codeium = true,
-  ollama = true,
+  ollama = false,
   chatgpt = false,
+  codecompanion = true,
 }
 
 function M.toggle_codium()
@@ -19,7 +20,6 @@ end
 
 function M.toggle_ollama()
   M.ai.ollama = not M.ai.ollama
-  -- vim.g.codeium_enabled = M.ai.codeium and 1 or 0
 
   if M.ai.ollama then
     vim.notify("✅ Ollama Enabled")
@@ -34,6 +34,10 @@ end
 
 function M.is_ollama_enabled()
   return M.ai.ollama
+end
+
+function M.is_codecompanion_enabled()
+  return M.ai.codecompanion
 end
 
 return M

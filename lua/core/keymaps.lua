@@ -139,11 +139,25 @@ function M.setup()
   end, { desc = "Toggle Codeium AI" })
 
   -- Gen (Ollama)
-  vim.keymap.set({ "n", "v" }, "<leader>ai", ":Gen<CR>")
+  -- vim.keymap.set({ "n", "v" }, "<leader>ai", ":Gen<CR>")
+  vim.keymap.set({ "n", "v" }, "<leader>ai", require("codecompanion").chat)
+  vim.keymap.set({ "n", "v" }, "<leader>aa", ":CodeCompanionActions<CR>")
 
   vim.keymap.set("n", "<leader>am", function()
     require("core.ai_picker").pick_model()
   end, { desc = "Switch AI Model (Ollama)" })
+
+  -- vim.keymap.set("n", "<leader>as", function()
+  --   require("core.sidebar").toggle_sidebar()
+  -- end, { desc = "Toggle AI Sidebar" })
+
+  -- vim.keymap.set("n", "<leader>aq", function()
+  --   vim.ui.input({ prompt = "Ask AI: " }, function(input)
+  --     if input then
+  --       require("core.sidebar").ask(input)
+  --     end
+  --   end)
+  -- end, { desc = "Ask AI in Sidebar" })
 end
 
 return M

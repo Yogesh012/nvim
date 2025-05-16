@@ -30,7 +30,7 @@ function M.pick_model()
           actions.close(prompt_bufnr)
 
           local model = selection[1]
-          local config = require("plugins.ai.gen_p").config
+          local config = require("plugins.ai._gen").config
           config.model = model
 
           local gen = require("gen")

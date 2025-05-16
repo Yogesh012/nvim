@@ -160,6 +160,15 @@ function M.setup()
 
     -- Ollama
     use({ "David-Kunz/gen.nvim" })
+
+    -- Code companion
+    use({ "olimorris/codecompanion.nvim" })
+
+    -- Render markdown
+    use({
+      "MeanderingProgrammer/render-markdown.nvim",
+      after = { "nvim-treesitter" },
+    })
   end)
 end
 

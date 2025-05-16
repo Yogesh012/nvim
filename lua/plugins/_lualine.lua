@@ -8,16 +8,15 @@ function M.setup()
       return ""
     end
 
-    local stauts, gen = pcall(require, "gen")
-    if not stauts then
+    if not aiconfig.is_ollama_enabled() then
       return ""
     end
 
-    --  󰫥 󰫢
-    if gen and gen.config and gen.config.model and aiconfig.is_ollama_enabled() then
-      return " " .. gen.config.model
-      -- return "🦙 OLM"
+    local model = require("plugins.ai._gen").config.model
+    if model ~= "" then
+      return "🦙 " .. model
     end
+
     return ""
   end
 
@@ -30,8 +29,6 @@ function M.setup()
       --  󰫥 󰫢
       local status_string = require("codeium.virtual_text").status_string()
       return (not string.find(status_string, "0") and status_string) or "✨ COD"
-    elseif aiconfig.is_chatgpt_enabled() then
-      return "🗨️ GPT"
     end
     return ""
   end
@@ -46,12 +43,28 @@ function M.setup()
     },
 
     sections = {
-      lualine_a = { "mode" },
+      lualine_a = { "mode", {
+        "diff",
+      } },
       lualine_b = { "branch" },
-      lualine_c = { "filename" },
-      lualine_x = { codeium_status, ollama_status, "encoding", "fileformat", "filetype" },
+      lualine_c = { "filename", "lsp_status" },
+      lualine_x = {
+        require("plugins.lualine_component"),
+        codeium_status,
+        ollama_status,
+        "encoding",
+        {
+          "fileformat",
+          symbols = {
+            unix = "", -- e712
+            dos = "", -- e70f
+            mac = "", -- e711
+          },
+        },
+        "filetype",
+      },
       lualine_y = { "progress" },
-      lualine_z = { "location" },
+      lualine_z = { "location", { "datetime", style = "%h:%m" } },
     },
   })
 end
