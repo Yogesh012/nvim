@@ -187,7 +187,6 @@ nvim/
 │   └── utils/                 # Helper functions
 ├── README.md                   # This file
 ├── KEYMAPS.md                  # Keybindings reference
-└── MEMORY_BANK.md              # Project knowledge base
 ```
 
 ## 🔌 Plugins
