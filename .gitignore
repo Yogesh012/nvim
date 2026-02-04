@@ -40,4 +40,4 @@ luac.out
 *.hex
 .amazonq
 .context
-.DS_Store
+*.DS_Store
