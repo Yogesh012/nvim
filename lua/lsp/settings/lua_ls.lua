@@ -15,6 +15,15 @@ return {
         enable = true,
       },
 
+      hint = {
+        enable = true,
+        setType = true,
+        paramType = true,
+        paramName = "All",
+        semicolon = "All",
+        arrayIndex = "Auto",
+      },
+
       workspace = {
         library = {
           vim.env.VIMRUNTIME,

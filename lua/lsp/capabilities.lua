@@ -10,4 +10,13 @@ else
   M = base
 end
 
+-- Enable inlay hints support
+M.textDocument = M.textDocument or {}
+M.textDocument.inlayHint = {
+  dynamicRegistration = true,
+  resolveSupport = {
+    properties = { "tooltip", "textEdits", "label.tooltip" },
+  },
+}
+
 return M

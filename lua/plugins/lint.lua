@@ -1,17 +1,10 @@
 local M = {}
 
 function M.setup()
+  local config = require("config")
   local lint = require("lint")
 
-  lint.linters_by_ft = {
-    python = { "ruff", "pylint" },
-    javascript = { "eslint_d" },
-    typescript = { "eslint_d" },
-    typescriptreact = { "eslint_d" },
-    javascriptreact = { "eslint_d" },
-    lua = { "luacheck" },
-    rust = { "clippy" },
-  }
+  lint.linters_by_ft = config.linting.linters_by_ft
 
   vim.api.nvim_create_autocmd({ "BufWritePost", "BufReadPost", "InsertLeave" }, {
     callback = function()

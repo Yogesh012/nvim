@@ -31,4 +31,11 @@ function M.toggle_virtual_text()
   vim.notify("Virtual text: " .. (M._virtual_text_enabled and "ON" or "OFF"))
 end
 
+function M.toggle_inlay_hints()
+  local bufnr = vim.api.nvim_get_current_buf()
+  local enabled = vim.lsp.inlay_hint.is_enabled({ bufnr = bufnr })
+  vim.lsp.inlay_hint.enable(not enabled, { bufnr = bufnr })
+  vim.notify("Inlay hints: " .. (not enabled and "ON" or "OFF"))
+end
+
 return M

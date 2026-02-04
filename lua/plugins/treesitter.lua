@@ -1,9 +1,16 @@
 local M = {}
 
 function M.setup()
+  local ok, configs = pcall(require, "nvim-treesitter")
+  if not ok then
+    vim.notify("nvim-treesitter not loaded.", vim.log.levels.WARN)
+    return
+  end
+
   require("rainbow-delimiters.setup").setup({})
-  require("nvim-treesitter.configs").setup({
-    ensure_installed = {
+  
+  configs.setup({
+    install = {
       "lua",
       "vim",
       "bash",
@@ -22,8 +29,8 @@ function M.setup()
       "c",
     },
 
-    sync_install = false, -- install in background
-    auto_install = true, -- install missing parsers when opening file
+    sync_install = false,
+    auto_install = true,
 
     highlight = {
       enable = true,
@@ -32,7 +39,6 @@ function M.setup()
 
     indent = {
       enable = true,
-      -- disable = {"python"}
     },
 
     incremental_selection = {
@@ -64,7 +70,7 @@ function M.setup()
 
     context_commentstring = {
       enable = true,
-      enable_autcmd = false, -- let comment.nvim handle it.
+      enable_autocmd = false,
     },
   })
 end

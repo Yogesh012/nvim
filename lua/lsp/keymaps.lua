@@ -7,11 +7,12 @@ function M.on_attach(client, bufnr)
   local themes = require("telescope.themes")
 
   -- Core LSP
-  vim.keymap.set("n", "ga", vim.lsp.buf.code_action, opts)
+  vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, { buffer = bufnr, desc = "Code Action" })
+  vim.keymap.set("v", "<leader>ca", vim.lsp.buf.code_action, { buffer = bufnr, desc = "Code Action" })
+  vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, { buffer = bufnr, desc = "Rename Symbol" })
+  vim.keymap.set("n", "K", vim.lsp.buf.hover, opts)
   vim.keymap.set("n", "gD", vim.lsp.buf.declaration, opts)
-  vim.keymap.set("n", "gh", vim.lsp.buf.hover, opts)
   vim.keymap.set("n", "gs", vim.lsp.buf.signature_help, opts)
-  vim.keymap.set("n", "gR", vim.lsp.buf.rename, opts)
 
   -- Diagnostic
   vim.keymap.set("n", "gj", function()
@@ -54,6 +55,13 @@ function M.on_attach(client, bufnr)
 
   -- Toggle virtual text
   vim.keymap.set("n", "<leader>tt", require("lsp.utils").toggle_virtual_text, { desc = "Toggle Virtual Text" })
+
+  -- Toggle inlay hints
+  vim.keymap.set("n", "<leader>th", require("lsp.utils").toggle_inlay_hints, { desc = "Toggle Inlay Hints" })
+
+  -- Diagnostics to quickfix/loclist
+  vim.keymap.set("n", "<leader>dq", vim.diagnostic.setqflist, { buffer = bufnr, desc = "Diagnostics to Quickfix" })
+  vim.keymap.set("n", "<leader>dl", vim.diagnostic.setloclist, { buffer = bufnr, desc = "Diagnostics to Loclist" })
 
   -- Format
   vim.keymap.set("n", "gf", function()
