@@ -31,13 +31,13 @@ function M.setup(client, bufnr)
   -- vim.api.nvim_set_hl(0, "DiagnosticVirtualTextHint", { fg = "#76b5a8", italic = true })
 
   -- Custom colors for virtual text by severity (subtle but distinct) - a little more dim
-  vim.api.nvim_set_hl(0, "DiagnosticVirtualTextError", { fg = "#9d5f68", italic = true })
-  vim.api.nvim_set_hl(0, "DiagnosticVirtualTextWarn", { fg = "#9d7a58", italic = true })
-  vim.api.nvim_set_hl(0, "DiagnosticVirtualTextInfo", { fg = "#5a729d", italic = true })
-  vim.api.nvim_set_hl(0, "DiagnosticVirtualTextHint", { fg = "#5a8d82", italic = true })
+  -- vim.api.nvim_set_hl(0, "DiagnosticVirtualTextError", { fg = "#9d5f68", italic = true })
+  -- vim.api.nvim_set_hl(0, "DiagnosticVirtualTextWarn", { fg = "#9d7a58", italic = true })
+  -- vim.api.nvim_set_hl(0, "DiagnosticVirtualTextInfo", { fg = "#5a729d", italic = true })
+  -- vim.api.nvim_set_hl(0, "DiagnosticVirtualTextHint", { fg = "#5a8d82", italic = true })
 
   -- Subtle inlay hints styling
-  vim.api.nvim_set_hl(0, "LspInlayHint", { fg = "#565f89", italic = true })
+  -- vim.api.nvim_set_hl(0, "LspInlayHint", { fg = "#565f89", italic = true })
 end
 
 return M

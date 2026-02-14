@@ -28,8 +28,19 @@ return {
 
   {
     "sindrets/diffview.nvim",
-    cmd = { "DiffviewOpen", "DiffviewFileHistory" },
+    cmd = { "DiffviewOpen", "DiffviewFileHistory", "DiffviewClose" },
     dependencies = { "nvim-lua/plenary.nvim" },
+    config = function()
+      require("plugins.diffview").setup()
+    end,
+  },
+
+  {
+    "akinsho/git-conflict.nvim",
+    event = "BufReadPost",
+    config = function()
+      require("plugins.git-conflict").setup()
+    end,
   },
 
   {
