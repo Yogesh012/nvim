@@ -131,7 +131,7 @@ return {
       "nvim-treesitter/nvim-treesitter-textobjects",
     },
     config = function()
-      require("plugins.treesitter").setup()
+      require("plugins.treesitter_v2").setup()
     end,
   },
 

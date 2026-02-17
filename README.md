@@ -86,6 +86,10 @@ editor = {
 
 Toggle at runtime: `:ToggleFormatOnSave`
 
+### Startup Option Guard (E21 Fix)
+
+Some options (e.g., `tabstop`, `shiftwidth`, `textwidth`, `listchars`, `conceallevel`, `fileencoding`) are **buffer-local**. On cold start, the active buffer can be unmodifiable (special UI buffers or the initial [No Name] buffer), so setting those options can raise `E21: Cannot make changes, 'modifiable' is off`. The config now applies buffer-local defaults only when `vim.bo.modifiable` is true, while keeping global defaults via `vim.opt_global`.
+
 ### Add Custom Settings
 
 The `config.lua` file is consumed by LSP, formatting, and plugin modules. Add your settings there and they'll be automatically picked up.

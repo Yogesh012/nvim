@@ -26,6 +26,8 @@ local M = {
       "html",
       "cssls",
     },
+    virtual_text = true,
+    inlay_hints = true,
   },
 
   -- Formatting (conform.nvim)

@@ -12,38 +12,50 @@ function M.setup()
 	vim.opt.updatetime = 300
 	vim.opt.cmdheight = 2
 	vim.opt.completeopt = { "menu", "menuone", "noselect" }
-	vim.opt.conceallevel = 0
-	vim.opt.fileencoding = "utf-8"
+	-- Buffer-local defaults (set global defaults first to avoid E21 on unmodifiable buffers)
+	local opt_global = vim.opt_global
+	local apply_buffer_defaults = function(opt)
+		opt.fileencoding = "utf-8"
+		opt.smartindent = true
+		opt.autoindent = true
+		opt.tabstop = 2
+		opt.shiftwidth = 2
+		opt.expandtab = true
+		opt.softtabstop = 2
+		opt.textwidth = 100
+		opt.wrap = false
+		opt.list = true
+		opt.listchars = { lead = "·", trail = "•", tab = "│ ", eol = "↴" }
+		opt.conceallevel = 0
+	end
+
+	apply_buffer_defaults(opt_global)
+
+	if vim.bo.modifiable then
+		local opt_local = vim.opt_local
+		apply_buffer_defaults(opt_local)
+	end
+	
 	vim.opt.hlsearch = true
 	vim.opt.ignorecase = true
 	vim.opt.pumheight = 10
 	vim.opt.showmode = false
 	vim.opt.showtabline = 2
 	vim.opt.smartcase = true
-	vim.opt.smartindent = true
-	vim.opt.autoindent = true
 	vim.opt.splitbelow = true
 	vim.opt.splitright = true
 	vim.opt.swapfile = false
 	vim.opt.timeoutlen = 1000
 	vim.opt.undofile = true
 	vim.opt.writebackup = false
-	vim.opt.tabstop = 2
-	vim.opt.shiftwidth = 2
-	vim.opt.expandtab = true
 	vim.opt.numberwidth = 2
-	vim.opt.wrap = false
 	vim.opt.sidescrolloff = 8
-	vim.opt.softtabstop = 2
-	vim.opt.textwidth = 100
-	vim.opt.list = true
-	vim.opt.listchars = { lead = "·", trail = "•", tab = "│ ", eol = "↴" }
 	vim.opt.clipboard:append("unnamedplus")
 	vim.opt.shortmess:append("c")
 
 	-- Folding (Treesitter-based)
 	vim.opt.foldmethod = "expr"
-	vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
+	vim.opt.foldexpr = "v:lua.vim.treesitter.foldexpr()"
 	vim.opt.foldenable = false
 	vim.opt.foldlevel = 99
 	vim.opt.foldlevelstart = 99

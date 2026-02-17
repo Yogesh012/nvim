@@ -38,4 +38,12 @@ return {
       require("plugins.devicons").setup()
     end,
   },
+
+  {
+    "MeanderingProgrammer/render-markdown.nvim",
+    ft = { "markdown", "codecompanion" },
+    config = function()
+      require("plugins.render_markdown").setup()
+    end,
+  },
 }

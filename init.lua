@@ -2,6 +2,4 @@
 require("core.keymaps").set_leader()
 
 require("plugins.lazy")
-require("core.options").setup()
-require("core.keymaps").setup()
-require("core.autocmds")
+require("core.init")

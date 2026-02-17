@@ -64,12 +64,23 @@ Leader key: `<Space>`
 | `gD` | Go to declaration |
 | `gr` | Show references |
 | `gi` | Go to implementation |
+| `gt` | Go to type definition |
 | `K` | Hover documentation |
+| `gs` | Signature help |
 | `<leader>ca` | Code actions |
 | `<leader>rn` | Rename symbol |
-| `[d` | Previous diagnostic |
-| `]d` | Next diagnostic |
-| `<leader>d` | Show line diagnostics |
+| `gj` | Next diagnostic (float) |
+| `gk` | Previous diagnostic (float) |
+| `gl` | Show line diagnostics (float) |
+| `gL` | Telescope diagnostics |
+| `<leader>tt` | Toggle virtual text |
+| `<leader>th` | Toggle inlay hints |
+| `<leader>dq` | Diagnostics to quickfix |
+| `<leader>dl` | Diagnostics to loclist |
+| `gf` | Format buffer |
+| `gwa` | Add workspace folder |
+| `gwr` | Remove workspace folder |
+| `gwl` | List workspace folders |
 
 ## Commenting
 
@@ -85,6 +96,11 @@ Leader key: `<Space>`
 | `:Lazy` | Manage plugins |
 | `:Mason` | Manage LSP servers, formatters, linters |
 | `:ToggleFormatOnSave` | Toggle auto-format on save |
+| `:Format` | Format buffer |
+| `:DiagnosticsShowAll` / `:DSA` | Show all diagnostics |
+| `:DiagnosticsShowErrors` / `:DSE` | Show errors only |
+| `:DiagnosticsShowWarnings` / `:DSW` | Show errors and warnings |
+| `:DiagnosticsHide` / `:DSH` | Hide diagnostics |
 | `:Telescope` | Open Telescope picker |
 | `:NvimTreeToggle` | Toggle file explorer |
 | `:checkhealth` | Check Neovim health |
