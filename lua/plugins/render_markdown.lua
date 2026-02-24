@@ -9,6 +9,7 @@ function M.setup()
 	render.setup({
 		file_types = { "markdown", "codecompanion" },
 		render_modes = true,
+		html = { enabled = false },
 		-- completions = {
 		--   lsp = {
 		--     enabled = true,

@@ -122,6 +122,7 @@ return {
 
   {
     "nvim-treesitter/nvim-treesitter",
+    branch = "master",
     lazy = false,
     priority = 100,
     build = ":TSUpdate",
@@ -129,6 +130,8 @@ return {
       "HiPhish/rainbow-delimiters.nvim",
       "JoosepAlviste/nvim-ts-context-commentstring",
       "nvim-treesitter/nvim-treesitter-textobjects",
+      "nvim-treesitter/nvim-treesitter-context",
+      "windwp/nvim-ts-autotag",
     },
     config = function()
       require("plugins.treesitter_v2").setup()

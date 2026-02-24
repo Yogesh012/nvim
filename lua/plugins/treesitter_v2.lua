@@ -31,7 +31,22 @@ function M.setup()
 		rainbow.setup({})
 	end
 
+	local ts_comment_ok, ts_comment = pcall(require, "ts_context_commentstring")
+	if ts_comment_ok then
+		ts_comment.setup({
+			enable_autocmd = false,
+		})
+	end
+
 	treesitter.setup({
+		ensure_installed = parsers,
+		sync_install = false,
+		auto_install = true,
+		
+		autotag = {
+			enable = true,
+		},
+
 		highlight = {
 			enable = true,
 			additional_vim_regex_highlighting = false,
@@ -62,19 +77,19 @@ function M.setup()
 					["ic"] = "@class.inner",
 				},
 			},
+			move = {
+				enable = true,
+				set_jumps = true,
+				goto_next_start = {
+					["]m"] = "@function.outer",
+					["]c"] = "@class.outer",
+				},
+				goto_previous_start = {
+					["[m"] = "@function.outer",
+					["[c"] = "@class.outer",
+				},
+			},
 		},
-
-		autopairs = {
-			enable = true,
-		},
-
-		context_commentstring = {
-			enable = true,
-			enable_autocmd = false,
-		},
-	})
-
-	treesitter.install(parsers)
+	}) 
 end
-
 return M

@@ -9,7 +9,7 @@ function M.setup()
 	vim.opt.cursorline = true
 	vim.opt.signcolumn = "yes"
 	vim.opt.scrolloff = 8
-	vim.opt.updatetime = 300
+	vim.opt.updatetime = 50
 	vim.opt.cmdheight = 2
 	vim.opt.completeopt = { "menu", "menuone", "noselect" }
 	-- Buffer-local defaults (set global defaults first to avoid E21 on unmodifiable buffers)
@@ -79,6 +79,8 @@ end
 -- Custom fold text function
 function _G.CustomFoldText()
 	local line = vim.fn.getline(vim.v.foldstart)
+	if not line then return "" end
+
 	local line_count = vim.v.foldend - vim.v.foldstart + 1
 	local indent = string.rep(" ", vim.fn.indent(vim.v.foldstart))
 
