@@ -32,3 +32,5 @@ vim.api.nvim_create_user_command("ToggleFormatOnSave", function()
   vim.g.format_on_save = not vim.g.format_on_save
   print("Format on save: " .. tostring(vim.g.format_on_save))
 end, {})
+
+

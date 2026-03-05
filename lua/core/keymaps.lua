@@ -38,6 +38,14 @@ function M.setup()
 
   -- Better paste in visual mode
   map("v", "p", '"_dP', opts)
+
+  -- ── Auto-theming (<leader>T*) ─────────────────────────────────────────────
+  map("n", "<leader>Tn", "<cmd>ThemeNext<cr>",        vim.tbl_extend("force", opts, { desc = "Theme: pick new random" }))
+  map("n", "<leader>Tc", "<cmd>ThemeConfig<cr>",      vim.tbl_extend("force", opts, { desc = "Theme: open settings picker" }))
+  map("n", "<leader>Td", "<cmd>ThemeMode dark<cr>",   vim.tbl_extend("force", opts, { desc = "Theme: dark mode (persisted)" }))
+  map("n", "<leader>Tl", "<cmd>ThemeMode light<cr>",  vim.tbl_extend("force", opts, { desc = "Theme: light mode (persisted)" }))
+  map("n", "<leader>Ta", "<cmd>ThemeMode any<cr>",    vim.tbl_extend("force", opts, { desc = "Theme: any mode (persisted)" }))
+  map("n", "<leader>Ti", "<cmd>ThemeInfo<cr>",        vim.tbl_extend("force", opts, { desc = "Theme: show current info" }))
 end
 
 return M
