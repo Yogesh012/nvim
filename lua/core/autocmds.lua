@@ -33,18 +33,4 @@ vim.api.nvim_create_user_command("ToggleFormatOnSave", function()
   print("Format on save: " .. tostring(vim.g.format_on_save))
 end, {})
 
--- ── Auto-theming module ───────────────────────────────────────────────────────
--- Apply a random theme after all plugins are loaded.
--- ensure_applied() is idempotent — safe to call even if the theme was already
--- set by the tokyonight fallback spec during plugin init.
-vim.api.nvim_create_autocmd("VimEnter", {
-  group = vim.api.nvim_create_augroup("AutoThemeStartup", { clear = true }),
-  once  = true,
-  callback = function()
-    require("themes").ensure_applied()
-  end,
-})
-
--- Register :ThemeNext, :ThemeMode, :ThemeConfig, :ThemeInfo commands
-require("themes.ui").setup()
 
