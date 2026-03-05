@@ -1,7 +1,3 @@
-local config = require("config")
-
-vim.g.tokyonight_style = "storm"
-vim.g.tokyonight_transparent = config.ui.transparent_background
-vim.g.tokyonight_italic_functions = true
-
-vim.cmd("colorscheme " .. config.ui.colorscheme)
+-- Theme application is handled by the themes module (lua/themes/init.lua).
+-- It is triggered by the VimEnter autocmd in lua/core/autocmds.lua.
+-- This file is intentionally left as a no-op.
