@@ -1,7 +1,25 @@
 return {
-	-- ── Fallback / default theme ────────────────────────────────────────────
-	-- Stays non-lazy so nvim always has a colorscheme during init.
-	-- The themes module (lua/themes/) takes over after VimEnter fires.
+	-- ── chromatic.nvim (local dev path) ──────────────────────────────────────
+	-- Loads the plugin from ~/chromatic.nvim while in development.
+	-- When published, replace `dir` with: "yourusername/chromatic.nvim"
+	{
+		dir      = vim.fn.expand("~/chromatic.nvim"),
+		name     = "chromatic.nvim",
+		lazy     = false,
+		priority = 999,   -- must load before other UI plugins
+		opts = {
+			mode         = nil,       -- "dark" | "light" | nil (any)
+			persist      = false,     -- true = replay last theme on next open
+			sync_lualine = true,
+			notify       = "notify",
+			-- allowlist = { "tokyonight-storm", "gruvbox" },
+			-- fallback  = "tokyonight",
+		},
+	},
+
+	-- ── Fallback / default theme ─────────────────────────────────────────────
+	-- Stays non-lazy so nvim is never colorscheme-less during early init.
+	-- chromatic.nvim applies the final random theme on VimEnter.
 	{
 		"folke/tokyonight.nvim",
 		lazy = false,
@@ -18,15 +36,15 @@ return {
 	-- Uncomment whichever you want to include in the random pool.
 	-- Add the corresponding entry to lua/themes/registry.lua if not present.
 	--
-	-- { "catppuccin/nvim",             name = "catppuccin",  lazy = true },
+	{ "catppuccin/nvim", name = "catppuccin", lazy = true },
 	{ "ellisonleao/gruvbox.nvim", lazy = true },
-	-- { "rebelot/kanagawa.nvim",                             lazy = true },
-	-- { "rose-pine/neovim",            name = "rose-pine",   lazy = true },
-	-- { "EdenEast/nightfox.nvim",                            lazy = true },
-	-- { "navarasu/onedark.nvim",                             lazy = true },
+	{ "rebelot/kanagawa.nvim", lazy = true },
+	{ "rose-pine/neovim", name = "rose-pine", lazy = true },
+	{ "EdenEast/nightfox.nvim", lazy = true },
+	{ "navarasu/onedark.nvim", lazy = true },
 	{ "Mofiqul/dracula.nvim", lazy = true },
-	-- { "shaunsingh/nord.nvim",                              lazy = true },
-	-- { "sainnhe/everforest",                                lazy = true },
+	{ "shaunsingh/nord.nvim", lazy = true },
+	{ "sainnhe/everforest", lazy = true },
 	-- { "projekt0n/github-nvim-theme",                       lazy = true },
 	{ "Shatur/neovim-ayu", lazy = true },
 
