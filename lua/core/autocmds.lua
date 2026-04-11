@@ -13,18 +13,18 @@ local reload = require("utils.reload")
  
 
 -- Treesitter rewrite: enable highlighting + indentexpr per buffer
-vim.api.nvim_create_autocmd("FileType", {
-  group = vim.api.nvim_create_augroup("TreesitterRewriteEnable", { clear = true }),
-  callback = function()
-    local ok = pcall(require, "nvim-treesitter")
-    if not ok then
-      return
-    end
-
-    pcall(vim.treesitter.start)
-    vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
-  end,
-})
+-- vim.api.nvim_create_autocmd("FileType", {
+--   group = vim.api.nvim_create_augroup("TreesitterRewriteEnable", { clear = true }),
+--   callback = function()
+--     local ok = pcall(require, "nvim-treesitter")
+--     if not ok then
+--       return
+--     end
+--
+--     pcall(vim.treesitter.start)
+--     vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+--   end,
+-- })
 
 -- Format on save toggle
 vim.g.format_on_save = config.editor.format_on_save
