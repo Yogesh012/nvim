@@ -1,5 +1,3 @@
-local utils = require("lsp.utils")
-
 return {
   settings = {
     python = {
@@ -35,7 +33,4 @@ return {
       },
     },
   },
-  on_attach = utils.with_on_attach(function(client)
-    utils.disable_format(client)
-  end),
 }

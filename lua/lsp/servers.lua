@@ -17,7 +17,6 @@ function M.setup()
   end
 
   local capabilities = require("lsp.capabilities")
-  local on_attach = require("lsp.utils").with_on_attach()
 
   -- Setup mason
   mason.setup({
@@ -40,7 +39,6 @@ function M.setup()
   local function setup_server(server_name)
     local opts = {
       capabilities = capabilities,
-      on_attach = on_attach,
     }
 
     -- Add per-server config override if available

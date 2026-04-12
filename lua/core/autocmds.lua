@@ -13,18 +13,18 @@ local reload = require("utils.reload")
  
 
 -- Treesitter rewrite: enable highlighting + indentexpr per buffer
-vim.api.nvim_create_autocmd("FileType", {
-  group = vim.api.nvim_create_augroup("TreesitterRewriteEnable", { clear = true }),
-  callback = function()
-    local ok = pcall(require, "nvim-treesitter")
-    if not ok then
-      return
-    end
-
-    pcall(vim.treesitter.start)
-    vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
-  end,
-})
+-- vim.api.nvim_create_autocmd("FileType", {
+--   group = vim.api.nvim_create_augroup("TreesitterRewriteEnable", { clear = true }),
+--   callback = function()
+--     local ok = pcall(require, "nvim-treesitter")
+--     if not ok then
+--       return
+--     end
+--
+--     pcall(vim.treesitter.start)
+--     vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+--   end,
+-- })
 
 -- Format on save toggle
 vim.g.format_on_save = config.editor.format_on_save
@@ -32,3 +32,66 @@ vim.api.nvim_create_user_command("ToggleFormatOnSave", function()
   vim.g.format_on_save = not vim.g.format_on_save
   print("Format on save: " .. tostring(vim.g.format_on_save))
 end, {})
+
+-- ── Wipe stale no-name buffer ─────────────────────────────────────────────────
+-- When a real file buffer is entered (e.g. opened via nvim-tree), wipe any
+-- leftover empty unnamed buffer that Neovim creates on startup.
+vim.api.nvim_create_autocmd("BufEnter", {
+  group = vim.api.nvim_create_augroup("WipeNoNameBuffer", { clear = true }),
+  callback = function()
+    local cur = vim.api.nvim_get_current_buf()
+    -- Only act when we've landed on a real file buffer
+    if vim.bo[cur].buftype ~= "" or vim.api.nvim_buf_get_name(cur) == "" then
+      return
+    end
+    for _, b in ipairs(vim.api.nvim_list_bufs()) do
+      if b ~= cur
+        and vim.api.nvim_buf_is_valid(b)
+        and vim.api.nvim_buf_get_name(b) == ""  -- unnamed
+        and not vim.bo[b].modified              -- unmodified
+        and vim.bo[b].buftype == ""             -- normal buffer (not quickfix etc.)
+      then
+        vim.api.nvim_buf_delete(b, { force = false })
+      end
+    end
+  end,
+})
+
+-- ── LSP Attach ────────────────────────────────────────────────────────────────
+-- All buffer-local LSP setup (keymaps, highlights, virtual text) lives here.
+vim.api.nvim_create_autocmd("LspAttach", {
+  group = vim.api.nvim_create_augroup("UserLspAttach", { clear = true }),
+  callback = function(args)
+    local client = vim.lsp.get_client_by_id(args.data.client_id)
+    if not client then return end
+    local bufnr = args.buf
+
+    -- Keymaps
+    require("lsp.keymaps").setup(client, bufnr)
+
+    -- Document highlight (symbols under cursor)
+    require("lsp.highlight").setup(client, bufnr)
+
+    -- Virtual text per buffer
+    local lsp_utils = require("lsp.utils")
+    vim.diagnostic.config({
+      virtual_text = lsp_utils._virtual_text_enabled and {
+        prefix = "●",
+        spacing = 2,
+      } or false,
+    }, bufnr)
+
+    -- Inlay hints
+    if config.lsp.inlay_hints ~= false then
+      pcall(vim.lsp.inlay_hint.enable, true, { bufnr = bufnr })
+    end
+
+    -- Per-server extras
+    local server = client.name
+    if server == "pyright" or server == "ruff" then
+      require("lsp.utils").disable_format(client)
+    end
+  end,
+})
+
+

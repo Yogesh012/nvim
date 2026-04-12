@@ -1,7 +1,6 @@
-local highlight = require("lsp.highlight")
 local M = {}
 
-function M.on_attach(client, bufnr)
+function M.setup(client, bufnr)
   local opts = { buffer = bufnr, noremap = true, silent = true }
   local telescope = require("telescope.builtin")
   local themes = require("telescope.themes")
@@ -69,9 +68,6 @@ function M.on_attach(client, bufnr)
   end, opts)
 
   vim.cmd([[ command! Format execute 'lua vim.lsp.buf.format({ async = true })' ]])
-
-  -- document highlighting- symbols under cursor are highlighted after a short pause),
-  highlight.setup(client, bufnr)
 end
 
 return M
