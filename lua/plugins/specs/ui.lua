@@ -1,28 +1,19 @@
 return {
-	-- ── chromatic.nvim (local dev path) ──────────────────────────────────────
-	-- Loads the plugin from ~/chromatic.nvim while in development.
-	-- When published, replace `dir` with: "yourusername/chromatic.nvim"
 	{
-		dir      = vim.fn.expand("~/chromatic.nvim"),
-		name     = "chromatic.nvim",
+		"Yogesh012/chromatic.nvim",
 		lazy     = false,
-		priority = 999,   -- must load before other UI plugins
+		priority = 999,
 		opts = {
-			mode         = nil,       -- "dark" | "light" | nil (any)
-			persist      = false,     -- true = replay last theme on next open
-			sync_lualine = true,
-			notify       = "notify",
-			-- allowlist = { "tokyonight-storm", "gruvbox" },
-			-- fallback  = "tokyonight",
+			mode    = "dark",   -- "dark" | "light" | nil (any)
+			persist = false,    -- true = replay last theme on next open
 		},
 	},
-
 	-- ── Fallback / default theme ─────────────────────────────────────────────
 	-- Stays non-lazy so nvim is never colorscheme-less during early init.
 	-- chromatic.nvim applies the final random theme on VimEnter.
 	{
 		"folke/tokyonight.nvim",
-		lazy = false,
+		lazy = true,
 		priority = 1000,
 		opts = {
 			style = "storm",

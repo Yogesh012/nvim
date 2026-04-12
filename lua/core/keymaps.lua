@@ -12,7 +12,44 @@ function M.setup()
 
   -- Basic file operations
   map("n", "<leader>w", ":update!<CR>", opts)
-  map("n", "<leader>q", ":bd<CR>", opts)
+  -- map("n", "<leader>q", ":bd<CR>", opts)
+  map("n", "<leader>q", function()
+    local cur = vim.api.nvim_get_current_buf()
+
+    -- All listed file buffers in creation order — matches bufferline visual order
+    local file_bufs = vim.tbl_filter(function(b)
+      return vim.api.nvim_buf_is_valid(b)
+        and vim.bo[b].buflisted
+        and vim.bo[b].buftype == ""
+        and vim.bo[b].filetype ~= "NvimTree"
+    end, vim.api.nvim_list_bufs())
+
+    -- Find current buffer's position in the visual order
+    local cur_idx = nil
+    for i, b in ipairs(file_bufs) do
+      if b == cur then cur_idx = i break end
+    end
+
+    if cur_idx == nil then
+      -- Not a regular file buffer (e.g. quickfix) — plain close
+      vim.api.nvim_buf_delete(cur, { force = false })
+      return
+    end
+
+    if cur_idx > 1 then
+      -- Left neighbour exists → jump to it before closing
+      vim.api.nvim_set_current_buf(file_bufs[cur_idx - 1])
+    else
+      -- No left neighbour — focus nvim-tree if open, else let Neovim exit
+      local ok, api = pcall(require, "nvim-tree.api")
+      if ok and api.tree.is_visible() then
+        api.tree.focus()
+      end
+    end
+
+    vim.api.nvim_buf_delete(cur, { force = false })
+  end, opts)
+
 
   -- Toggle between current and last buffer
   map("n", "<leader><leader>", "<C-^>", opts)

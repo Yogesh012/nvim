@@ -33,6 +33,30 @@ vim.api.nvim_create_user_command("ToggleFormatOnSave", function()
   print("Format on save: " .. tostring(vim.g.format_on_save))
 end, {})
 
+-- ── Wipe stale no-name buffer ─────────────────────────────────────────────────
+-- When a real file buffer is entered (e.g. opened via nvim-tree), wipe any
+-- leftover empty unnamed buffer that Neovim creates on startup.
+vim.api.nvim_create_autocmd("BufEnter", {
+  group = vim.api.nvim_create_augroup("WipeNoNameBuffer", { clear = true }),
+  callback = function()
+    local cur = vim.api.nvim_get_current_buf()
+    -- Only act when we've landed on a real file buffer
+    if vim.bo[cur].buftype ~= "" or vim.api.nvim_buf_get_name(cur) == "" then
+      return
+    end
+    for _, b in ipairs(vim.api.nvim_list_bufs()) do
+      if b ~= cur
+        and vim.api.nvim_buf_is_valid(b)
+        and vim.api.nvim_buf_get_name(b) == ""  -- unnamed
+        and not vim.bo[b].modified              -- unmodified
+        and vim.bo[b].buftype == ""             -- normal buffer (not quickfix etc.)
+      then
+        vim.api.nvim_buf_delete(b, { force = false })
+      end
+    end
+  end,
+})
+
 -- ── LSP Attach ────────────────────────────────────────────────────────────────
 -- All buffer-local LSP setup (keymaps, highlights, virtual text) lives here.
 vim.api.nvim_create_autocmd("LspAttach", {
