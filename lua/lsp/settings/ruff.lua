@@ -1,5 +1,3 @@
-local utils = require("lsp.utils")
-
 return {
   cmd = { "ruff", "server", "--preview" },
   root_dir = require("lspconfig.util").root_pattern("pyproject.toml", "ruff.toml", ".ruff.toml", ".git"),
@@ -27,8 +25,4 @@ return {
     },
   },
   
-  on_attach = utils.with_on_attach(function(client)
-    -- Disable LSP formatting (using conform.nvim instead)
-    utils.disable_format(client)
-  end),
 }

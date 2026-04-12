@@ -33,4 +33,41 @@ vim.api.nvim_create_user_command("ToggleFormatOnSave", function()
   print("Format on save: " .. tostring(vim.g.format_on_save))
 end, {})
 
+-- ── LSP Attach ────────────────────────────────────────────────────────────────
+-- All buffer-local LSP setup (keymaps, highlights, virtual text) lives here.
+vim.api.nvim_create_autocmd("LspAttach", {
+  group = vim.api.nvim_create_augroup("UserLspAttach", { clear = true }),
+  callback = function(args)
+    local client = vim.lsp.get_client_by_id(args.data.client_id)
+    if not client then return end
+    local bufnr = args.buf
+
+    -- Keymaps
+    require("lsp.keymaps").setup(client, bufnr)
+
+    -- Document highlight (symbols under cursor)
+    require("lsp.highlight").setup(client, bufnr)
+
+    -- Virtual text per buffer
+    local lsp_utils = require("lsp.utils")
+    vim.diagnostic.config({
+      virtual_text = lsp_utils._virtual_text_enabled and {
+        prefix = "●",
+        spacing = 2,
+      } or false,
+    }, bufnr)
+
+    -- Inlay hints
+    if config.lsp.inlay_hints ~= false then
+      pcall(vim.lsp.inlay_hint.enable, true, { bufnr = bufnr })
+    end
+
+    -- Per-server extras
+    local server = client.name
+    if server == "pyright" or server == "ruff" then
+      require("lsp.utils").disable_format(client)
+    end
+  end,
+})
+
 
