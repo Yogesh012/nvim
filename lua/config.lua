@@ -46,9 +46,12 @@ local M = {
 	},
 
 	-- Linting (nvim-lint)
+	-- NOTE: Python is intentionally omitted here — the Ruff LSP server handles
+	-- all linting diagnostics for .py files. Adding ruff here would cause
+	-- duplicate diagnostics from both "ruff:" (nvim-lint) and "Ruff:" (LSP).
 	linting = {
 		linters_by_ft = {
-			python = { "ruff" },
+			-- python = { "ruff" },
 			javascript = { "eslint" },
 			typescript = { "eslint" },
 		},
