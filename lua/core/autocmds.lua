@@ -1,32 +1,30 @@
 local config = require("config")
 local reload = require("utils.reload")
 
--- vim.api.nvim_create_autocmd("BufWritePost", {
---   pattern = vim.fn.stdpath("config") .. "/lua/**/*.lua",
---   group = vim.api.nvim_create_augroup("AutoReloadNvimConfig", { clear = true }),
---   callback = function(args)
---     local file = args.file
---     reload.reload_config_for_file(file)
---   end,
--- })
+vim.api.nvim_create_autocmd("BufWritePost", {
+  pattern = vim.fn.stdpath("config") .. "/lua/**/*.lua",
+  group = vim.api.nvim_create_augroup("AutoReloadNvimConfig", { clear = true }),
+  callback = function(args)
+    local file = args.file
+    reload.reload_config_for_file(file)
+  end,
+})
 
- 
 
--- Treesitter rewrite: enable highlighting + indentexpr per buffer
--- vim.api.nvim_create_autocmd("FileType", {
---   group = vim.api.nvim_create_augroup("TreesitterRewriteEnable", { clear = true }),
---   callback = function()
---     local ok = pcall(require, "nvim-treesitter")
---     if not ok then
---       return
---     end
---
---     pcall(vim.treesitter.start)
---     vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
---   end,
--- })
+-- ── Treesitter: Highlighting + Indentation ────────────────────────────────────
+vim.api.nvim_create_autocmd("FileType", {
+  group = vim.api.nvim_create_augroup("TreesitterFeatures", { clear = true }),
+  callback = function(args)
+    -- Enable treesitter syntax highlighting for this buffer.
+    local hl_ok = pcall(vim.treesitter.start, args.buf)
+    -- Enable nvim-treesitter's indentation only when a parser is available.
+    if hl_ok then
+      vim.bo[args.buf].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+    end
+  end,
+})
 
--- Format on save toggle
+-- ── Format on save toggle ─────────────────────────────────────────────────────
 vim.g.format_on_save = config.editor.format_on_save
 vim.api.nvim_create_user_command("ToggleFormatOnSave", function()
   vim.g.format_on_save = not vim.g.format_on_save

@@ -122,19 +122,19 @@ return {
 
   {
     "nvim-treesitter/nvim-treesitter",
-    branch = "master",
+    branch = "main", -- rewritten for Neovim 0.12+ (master is frozen)
     lazy = false,
     priority = 100,
     build = ":TSUpdate",
     dependencies = {
       "HiPhish/rainbow-delimiters.nvim",
       "JoosepAlviste/nvim-ts-context-commentstring",
-      "nvim-treesitter/nvim-treesitter-textobjects",
+      { "nvim-treesitter/nvim-treesitter-textobjects", branch = "main" },
       "nvim-treesitter/nvim-treesitter-context",
       "windwp/nvim-ts-autotag",
     },
     config = function()
-      require("plugins.treesitter_v2").setup()
+      require("plugins.treesitter_v3").setup()
     end,
   },
 
