@@ -93,3 +93,39 @@ vim.api.nvim_create_autocmd("LspAttach", {
 })
 
 
+-- ── Dynamic High Contrast Search Highlights ─────────────────────────────────
+-- Guarantees clear visibility while randomly picking from aesthetically appealing color pairs.
+vim.api.nvim_create_autocmd("ColorScheme", {
+  group = vim.api.nvim_create_augroup("HighContrastSearch", { clear = true }),
+  callback = function()
+    local themes = {
+      { search = { bg = "#1348d8ff", fg = "#FFFFFF" }, cur = { bg = "#ec7028ff", fg = "#000000" } }, -- Classic Blue & Orange
+      { search = { bg = "#8969dcff", fg = "#FFFFFF" }, cur = { bg = "#8545d3ff", fg = "#000000" } }, -- Deep Purple & Bright Violet
+      { search = { bg = "#1cd4b9ff", fg = "#FFFFFF" }, cur = { bg = "#7DCFFF", fg = "#000000" } }, -- Dark Teal & Neon Cyan
+      { search = { bg = "#70395D", fg = "#FFFFFF" }, cur = { bg = "#F7768E", fg = "#000000" } }, -- Plum & Bright Coral/Pink
+      { search = { bg = "#668731ff", fg = "#FFFFFF" }, cur = { bg = "#aec733ff", fg = "#000000" } }, -- Olive & Bright Yellow-Green
+    }
+
+    -- Randomly select a theme pair
+    math.randomseed(os.time())
+    local selected = themes[math.random(1, #themes)]
+
+    -- Non-focused matches
+    vim.api.nvim_set_hl(0, "Search", {
+      bg = selected.search.bg,
+      fg = selected.search.fg,
+      default = false
+    })
+
+    -- Focused match under cursor
+    local active_match = {
+      bg = selected.cur.bg,
+      fg = selected.cur.fg,
+      bold = true,
+      default = false
+    }
+    
+    vim.api.nvim_set_hl(0, "CurSearch", active_match)
+    vim.api.nvim_set_hl(0, "IncSearch", active_match)
+  end,
+})
