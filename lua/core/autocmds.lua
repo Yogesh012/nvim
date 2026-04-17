@@ -19,7 +19,10 @@ vim.api.nvim_create_autocmd("FileType", {
     local hl_ok = pcall(vim.treesitter.start, args.buf)
     -- Enable nvim-treesitter's indentation only when a parser is available.
     if hl_ok then
-      vim.bo[args.buf].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+    --   vim.bo[args.buf].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+      if vim.bo[args.buf].filetype ~= "python" then
+        vim.bo[args.buf].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+      end
     end
   end,
 })
