@@ -69,6 +69,13 @@ function M.setup()
 	vim.opt.statuscolumn = "%s%=%{v:relnum?v:relnum:v:lnum} %C"
 
 	vim.g.python_recommended_style = 0
+	vim.g.python_pep8_indent = 0
+	
+	-- Prevent Vim's python indenter from mathematically doubling the shiftwidth (2x2=4) inside parameters
+	vim.g.pyindent_open_paren = '&sw'
+	vim.g.pyindent_nested_paren = '&sw'
+	vim.g.pyindent_continue = '&sw'
+	vim.g.pyindent_disable_paren_align = 1
 
 	vim.cmd([[filetype plugin indent on]])
 
