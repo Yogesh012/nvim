@@ -5,14 +5,15 @@ A clean, modular Neovim configuration built with Lua and lazy.nvim. Focused on s
 ## ✨ Features
 
 - 🚀 **Fast Startup** - Lazy loading with lazy.nvim, optimized for performance
-- 🎨 **Modern UI** - Tokyo Night theme, lualine, bufferline
-- 📝 **LSP Support** - Full language server protocol integration via Mason
+- 🎨 **Modern UI** - Dynamic themes via chromatic.nvim, lualine, bufferline
+- 📝 **LSP Support** - Full language server protocol integration (native 0.11+)
 - 🔍 **Fuzzy Finding** - Telescope with extended keymaps
 - 🌳 **File Explorer** - nvim-tree for project navigation
 - ✅ **Auto-completion** - nvim-cmp with LSP and snippet support
 - 🎯 **Formatting & Linting** - conform.nvim and nvim-lint
+- ⌨️ **Keymap Help** - Press `?` for a searchable keymap reference (by key, category, or description)
 - 🔧 **Easy Customization** - Single `config.lua` file for all settings
-- 📦 **Modular Design** - Organized plugin specs by category
+- 📦 **Modular Design** - Organized plugin specs and keymap files by category
 
 ## 📦 Installation
 
@@ -96,14 +97,18 @@ The `config.lua` file is consumed by LSP, formatting, and plugin modules. Add yo
 
 ## ⌨️ Keybindings
 
-Leader key: `<Space>`
+Leader key: `<Space>` — see [KEYMAPS.md](KEYMAPS.md) for the full reference.
+
+> Press `?` in normal mode to open the **interactive keymap help picker** — search by key combo, category, or description keyword.
 
 ### Core
 
 | Key | Action |
 |-----|--------|
+| `?` | Keymap help picker |
 | `<leader>w` | Save file |
 | `<leader>q` | Close buffer |
+| `<leader><leader>` | Toggle last buffer |
 | `jk` | Exit insert mode |
 | `<C-h/j/k/l>` | Navigate windows |
 
@@ -112,49 +117,50 @@ Leader key: `<Space>`
 | Key | Action |
 |-----|--------|
 | `<leader>ff` | Find files (dropdown) |
-| `<leader>fF` | Find files (with preview) |
 | `<leader>fg` | Live grep |
 | `<leader>fb` | Buffers |
 | `<leader>fr` | Recent files |
-| `<leader>fh` | Help tags |
-| `<leader>fc` | Commands |
-| `<leader>fk` | Keymaps |
-| `<leader>f/` | Grep in current buffer |
-| `<leader>fs` | File symbols (Treesitter) |
-| `<leader>fS` | File symbols (LSP) |
-| `<leader>fw` | Workspace symbols |
-| `<leader>fcf` | Find config files |
-| `<leader>fcg` | Grep in config |
 | `<leader>fP` | Projects |
+| `<leader>fcf` / `<leader>fcg` | Find / grep config files |
 | `<leader>e` | Toggle file explorer |
 
-### Buffers
+### Git
 
 | Key | Action |
 |-----|--------|
-| `<Tab>` | Next buffer |
-| `<S-Tab>` | Previous buffer |
-| `<leader>bp` | Pick buffer |
+| `]g` / `[g` | Next / prev hunk |
+| `<leader>hs` | Stage hunk |
+| `<leader>hr` | Reset hunk |
+| `<leader>hS` | Stage buffer |
+| `<leader>gs` | Git status (Telescope) |
+| `<leader>gc` | Commits (Telescope) |
+| `<leader>dv` | Diff view |
 
-### LSP (when in a file with LSP)
+### LSP (buffer-local when LSP attached)
 
 | Key | Action |
 |-----|--------|
-| `gd` | Go to definition |
-| `gD` | Go to declaration |
-| `gr` | References |
-| `gi` | Implementation |
-| `K` | Hover documentation |
+| `gd` / `gr` / `gi` / `gt` | Definition / references / impl / type |
+| `K` | Hover docs |
 | `<leader>ca` | Code actions |
 | `<leader>rn` | Rename |
-| `[d` / `]d` | Previous/next diagnostic |
+| `gj` / `gk` | Next / prev diagnostic |
+| `gL` | All diagnostics (Telescope) |
+| `gf` | Format buffer |
+
+### Themes
+
+| Key | Action |
+|-----|--------|
+| `<leader>Tn` | Random next theme |
+| `<leader>Td` / `<leader>Tl` | Set dark / light mode |
+| `<leader>Tc` | Theme picker |
 
 ### Text Editing
 
 | Key | Action |
 |-----|--------|
-| `gc` | Comment toggle (normal/visual) |
-| `gb` | Block comment toggle |
+| `gc` / `gb` | Comment toggle (line / block) |
 | `<M-j>` / `<M-k>` | Move line up/down |
 | `J` / `K` (visual) | Move selection up/down |
 
@@ -168,12 +174,12 @@ nvim/
 │   ├── core/
 │   │   ├── init.lua           # Core module loader
 │   │   ├── options.lua        # Editor options
-│   │   ├── keymaps.lua        # Core keymaps (minimal)
+│   │   ├── keymaps.lua        # Core keymaps + '?' help trigger
 │   │   └── autocmds.lua       # Auto commands
 │   ├── lsp/
 │   │   ├── init.lua           # LSP setup
 │   │   ├── servers.lua        # Server configs (uses config.lua)
-│   │   ├── keymaps.lua        # LSP keymaps
+│   │   ├── keymaps.lua        # LSP keymaps (all LSP: prefixed)
 │   │   ├── diagnostics.lua    # Diagnostics config
 │   │   ├── capabilities.lua   # LSP capabilities
 │   │   ├── utils.lua          # LSP utilities
@@ -184,13 +190,16 @@ nvim/
 │   │   │   ├── core.lua       # Telescope, nvim-tree, Treesitter
 │   │   │   ├── ui.lua         # Colorscheme, lualine, bufferline
 │   │   │   ├── editor.lua     # Comment, autopairs, gitsigns
-│   │   │   ├── lsp.lua        # LSP plugins (Mason, lspconfig)
+│   │   │   ├── lsp.lua        # LSP plugins
 │   │   │   ├── completion.lua # nvim-cmp stack
 │   │   │   └── tools.lua      # Formatting & linting
+│   │   ├── keymaps/           # Dedicated keymap modules
+│   │   │   ├── telescope.lua  # All Find: keymaps
+│   │   │   └── help.lua       # '?' keymap help picker
 │   │   └── [configs]/         # Individual plugin configs
 │   └── utils/                 # Helper functions
 ├── README.md                   # This file
-├── KEYMAPS.md                  # Keybindings reference
+├── KEYMAPS.md                  # Full keybindings reference
 ```
 
 ## 🔌 Plugins
@@ -231,14 +240,15 @@ nvim/
 
 ## 📝 Tips
 
-1. **Install LSP servers**: Run `:Mason` and install servers for your languages
-2. **Install formatters/linters**: Use Mason or your system package manager
-3. **Customize settings**: Edit `lua/config.lua` for most changes
-4. **Add new plugins**: Add specs to files in `lua/plugins/specs/`
-5. **Plugin-specific keymaps**: Defined in plugin specs for better organization
-6. **Check health**: Run `:checkhealth` to diagnose issues
-7. **Profile startup**: `nvim --startuptime startup.log` to check performance
-8. **View keymaps**: See `KEYMAPS.md` for complete reference
+1. **Find any keymap**: Press `?` to open the interactive keymap help picker
+2. **Install LSP servers**: Run `:Mason` and install servers for your languages
+3. **Install formatters/linters**: Use Mason or your system package manager
+4. **Customize settings**: Edit `lua/config.lua` for most changes
+5. **Add new plugins**: Add specs to files in `lua/plugins/specs/`
+6. **Add new keymaps**: Use `"Category: Description"` in `desc` so they appear in `?`
+7. **Check health**: Run `:checkhealth` to diagnose issues
+8. **Profile startup**: `nvim --startuptime startup.log` to check performance
+9. **Full keymap reference**: See `KEYMAPS.md`
 
 ## 🏗️ Architecture
 
