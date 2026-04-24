@@ -22,6 +22,12 @@ function M.setup()
 		end,
 
 		formatters_by_ft = config.formatting.formatters_by_ft,
+
+		formatters = {
+			ruff_format = {
+				append_args = { "--config", "indent-width=2" },
+			},
+		},
 	})
 end
 

@@ -52,9 +52,9 @@ return {
 		"akinsho/bufferline.nvim",
 		event = "VeryLazy",
 		keys = {
-			{ "<Tab>", "<cmd>BufferLineCycleNext<cr>", desc = "Next Buffer" },
-			{ "<S-Tab>", "<cmd>BufferLineCyclePrev<cr>", desc = "Previous Buffer" },
-			{ "<leader>bp", "<cmd>BufferLinePick<cr>", desc = "Pick Buffer" },
+			{ "<Tab>", "<cmd>BufferLineCycleNext<cr>", desc = "Buffer: Next" },
+			{ "<S-Tab>", "<cmd>BufferLineCyclePrev<cr>", desc = "Buffer: Previous" },
+			{ "<leader>bp", "<cmd>BufferLinePick<cr>", desc = "Buffer: Pick" },
 		},
 		dependencies = { "nvim-tree/nvim-web-devicons" },
 		config = function()

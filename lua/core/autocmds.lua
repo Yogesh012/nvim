@@ -1,32 +1,33 @@
 local config = require("config")
 local reload = require("utils.reload")
 
--- vim.api.nvim_create_autocmd("BufWritePost", {
---   pattern = vim.fn.stdpath("config") .. "/lua/**/*.lua",
---   group = vim.api.nvim_create_augroup("AutoReloadNvimConfig", { clear = true }),
---   callback = function(args)
---     local file = args.file
---     reload.reload_config_for_file(file)
---   end,
--- })
+vim.api.nvim_create_autocmd("BufWritePost", {
+  pattern = vim.fn.stdpath("config") .. "/lua/**/*.lua",
+  group = vim.api.nvim_create_augroup("AutoReloadNvimConfig", { clear = true }),
+  callback = function(args)
+    local file = args.file
+    reload.reload_config_for_file(file)
+  end,
+})
 
- 
 
--- Treesitter rewrite: enable highlighting + indentexpr per buffer
--- vim.api.nvim_create_autocmd("FileType", {
---   group = vim.api.nvim_create_augroup("TreesitterRewriteEnable", { clear = true }),
---   callback = function()
---     local ok = pcall(require, "nvim-treesitter")
---     if not ok then
---       return
---     end
---
---     pcall(vim.treesitter.start)
---     vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
---   end,
--- })
+-- ── Treesitter: Highlighting + Indentation ────────────────────────────────────
+vim.api.nvim_create_autocmd("FileType", {
+  group = vim.api.nvim_create_augroup("TreesitterFeatures", { clear = true }),
+  callback = function(args)
+    -- Enable treesitter syntax highlighting for this buffer.
+    local hl_ok = pcall(vim.treesitter.start, args.buf)
+    -- Enable nvim-treesitter's indentation only when a parser is available.
+    if hl_ok then
+    --   vim.bo[args.buf].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+      if vim.bo[args.buf].filetype ~= "python" then
+        vim.bo[args.buf].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+      end
+    end
+  end,
+})
 
--- Format on save toggle
+-- ── Format on save toggle ─────────────────────────────────────────────────────
 vim.g.format_on_save = config.editor.format_on_save
 vim.api.nvim_create_user_command("ToggleFormatOnSave", function()
   vim.g.format_on_save = not vim.g.format_on_save
@@ -95,3 +96,39 @@ vim.api.nvim_create_autocmd("LspAttach", {
 })
 
 
+-- ── Dynamic High Contrast Search Highlights ─────────────────────────────────
+-- Guarantees clear visibility while randomly picking from aesthetically appealing color pairs.
+vim.api.nvim_create_autocmd("ColorScheme", {
+  group = vim.api.nvim_create_augroup("HighContrastSearch", { clear = true }),
+  callback = function()
+    local themes = {
+      { search = { bg = "#1348d8ff", fg = "#FFFFFF" }, cur = { bg = "#ec7028ff", fg = "#000000" } }, -- Classic Blue & Orange
+      { search = { bg = "#8969dcff", fg = "#FFFFFF" }, cur = { bg = "#8545d3ff", fg = "#000000" } }, -- Deep Purple & Bright Violet
+      { search = { bg = "#1cd4b9ff", fg = "#FFFFFF" }, cur = { bg = "#7DCFFF", fg = "#000000" } }, -- Dark Teal & Neon Cyan
+      { search = { bg = "#70395D", fg = "#FFFFFF" }, cur = { bg = "#F7768E", fg = "#000000" } }, -- Plum & Bright Coral/Pink
+      { search = { bg = "#668731ff", fg = "#FFFFFF" }, cur = { bg = "#aec733ff", fg = "#000000" } }, -- Olive & Bright Yellow-Green
+    }
+
+    -- Randomly select a theme pair
+    math.randomseed(os.time())
+    local selected = themes[math.random(1, #themes)]
+
+    -- Non-focused matches
+    vim.api.nvim_set_hl(0, "Search", {
+      bg = selected.search.bg,
+      fg = selected.search.fg,
+      default = false
+    })
+
+    -- Focused match under cursor
+    local active_match = {
+      bg = selected.cur.bg,
+      fg = selected.cur.fg,
+      bold = true,
+      default = false
+    }
+    
+    vim.api.nvim_set_hl(0, "CurSearch", active_match)
+    vim.api.nvim_set_hl(0, "IncSearch", active_match)
+  end,
+})

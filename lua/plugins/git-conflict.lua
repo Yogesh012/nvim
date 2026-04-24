@@ -17,14 +17,14 @@ function M.setup()
   local opts = { noremap = true, silent = true }
 
   -- Navigation
-  map("n", "]x", "<cmd>GitConflictNextConflict<cr>", { desc = "Conflict: Next" })
-  map("n", "[x", "<cmd>GitConflictPrevConflict<cr>", { desc = "Conflict: Previous" })
+  map("n", "]x", "<cmd>GitConflictNextConflict<cr>", { desc = "Git: Conflict – Next" })
+  map("n", "[x", "<cmd>GitConflictPrevConflict<cr>", { desc = "Git: Conflict – Previous" })
 
   -- Resolution
-  map("n", "<leader>co", "<cmd>GitConflictChooseOurs<cr>", { desc = "Conflict: Choose Ours" })
-  map("n", "<leader>ct", "<cmd>GitConflictChooseTheirs<cr>", { desc = "Conflict: Choose Theirs" })
-  map("n", "<leader>cb", "<cmd>GitConflictChooseBoth<cr>", { desc = "Conflict: Choose Both" })
-  map("n", "<leader>cn", "<cmd>GitConflictChooseNone<cr>", { desc = "Conflict: Choose None" })
+  map("n", "<leader>co", "<cmd>GitConflictChooseOurs<cr>", { desc = "Git: Conflict – Choose Ours" })
+  map("n", "<leader>ct", "<cmd>GitConflictChooseTheirs<cr>", { desc = "Git: Conflict – Choose Theirs" })
+  map("n", "<leader>cb", "<cmd>GitConflictChooseBoth<cr>", { desc = "Git: Conflict – Choose Both" })
+  map("n", "<leader>cn", "<cmd>GitConflictChooseNone<cr>", { desc = "Git: Conflict – Choose None" })
 
   -- List conflicts (Telescope with ivy theme)
   map("n", "<leader>cx", function()
@@ -33,7 +33,7 @@ function M.setup()
       previewer = false,
     }))
     vim.cmd("GitConflictListQf")
-  end, { desc = "Conflict: List All" })
+  end, { desc = "Git: Conflict – List All" })
 
   -- Merge views (manual)
   map("n", "<leader>gm3", "<cmd>DiffviewOpen<cr>", { desc = "Git: 3-Way Merge View" })

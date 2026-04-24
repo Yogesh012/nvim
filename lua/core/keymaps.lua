@@ -10,13 +10,12 @@ function M.setup()
   local map = vim.keymap.set
   local opts = { noremap = true, silent = true }
 
-  -- Basic file operations
-  map("n", "<leader>w", ":update!<CR>", opts)
-  -- map("n", "<leader>q", ":bd<CR>", opts)
+  -- ── File / session ────────────────────────────────────────────────────────
+  map("n", "<leader>w", ":update!<CR>", vim.tbl_extend("force", opts, { desc = "Editor: Save File" }))
+
   map("n", "<leader>q", function()
     local cur = vim.api.nvim_get_current_buf()
 
-    -- All listed file buffers in creation order — matches bufferline visual order
     local file_bufs = vim.tbl_filter(function(b)
       return vim.api.nvim_buf_is_valid(b)
         and vim.bo[b].buflisted
@@ -24,23 +23,19 @@ function M.setup()
         and vim.bo[b].filetype ~= "NvimTree"
     end, vim.api.nvim_list_bufs())
 
-    -- Find current buffer's position in the visual order
     local cur_idx = nil
     for i, b in ipairs(file_bufs) do
       if b == cur then cur_idx = i break end
     end
 
     if cur_idx == nil then
-      -- Not a regular file buffer (e.g. quickfix) — plain close
       vim.api.nvim_buf_delete(cur, { force = false })
       return
     end
 
     if cur_idx > 1 then
-      -- Left neighbour exists → jump to it before closing
       vim.api.nvim_set_current_buf(file_bufs[cur_idx - 1])
     else
-      -- No left neighbour — focus nvim-tree if open, else let Neovim exit
       local ok, api = pcall(require, "nvim-tree.api")
       if ok and api.tree.is_visible() then
         api.tree.focus()
@@ -48,41 +43,45 @@ function M.setup()
     end
 
     vim.api.nvim_buf_delete(cur, { force = false })
-  end, opts)
-
+  end, vim.tbl_extend("force", opts, { desc = "Editor: Close Buffer" }))
 
   -- Toggle between current and last buffer
-  map("n", "<leader><leader>", "<C-^>", opts)
+  map("n", "<leader><leader>", "<C-^>", vim.tbl_extend("force", opts, { desc = "Editor: Toggle Last Buffer" }))
 
-  -- Insert mode escape
-  map("i", "jk", "<Esc>", opts)
+  -- ── Insert mode ───────────────────────────────────────────────────────────
+  map("i", "jk", "<Esc>", vim.tbl_extend("force", opts, { desc = "Editor: Escape Insert Mode" }))
 
-  -- Window navigation
-  map("n", "<C-h>", "<C-w>h", opts)
-  map("n", "<C-j>", "<C-w>j", opts)
-  map("n", "<C-k>", "<C-w>k", opts)
-  map("n", "<C-l>", "<C-w>l", opts)
+  -- ── Window navigation ─────────────────────────────────────────────────────
+  map("n", "<C-h>", "<C-w>h", vim.tbl_extend("force", opts, { desc = "Editor: Window Left"  }))
+  map("n", "<C-j>", "<C-w>j", vim.tbl_extend("force", opts, { desc = "Editor: Window Down"  }))
+  map("n", "<C-k>", "<C-w>k", vim.tbl_extend("force", opts, { desc = "Editor: Window Up"    }))
+  map("n", "<C-l>", "<C-w>l", vim.tbl_extend("force", opts, { desc = "Editor: Window Right" }))
 
-  -- Move text up and down
-  map("n", "<M-j>", "<Esc>:m .+1<CR>==", opts)
-  map("n", "<M-k>", "<Esc>:m .-2<CR>==", opts)
-  map("v", "<M-j>", ":m .+1<CR>==", opts)
-  map("v", "<M-k>", ":m .-2<CR>==", opts)
-  map("x", "J", ":move '>+1<CR>gv-gv", opts)
-  map("x", "K", ":move '<-2<CR>gv-gv", opts)
-  map("x", "<M-j>", ":move '>+1<CR>gv-gv", opts)
-  map("x", "<M-k>", ":move '<-2<CR>gv-gv", opts)
+  -- ── Move text ─────────────────────────────────────────────────────────────
+  map("n", "<M-j>", "<Esc>:m .+1<CR>==", vim.tbl_extend("force", opts, { desc = "Editor: Move Line Down" }))
+  map("n", "<M-k>", "<Esc>:m .-2<CR>==", vim.tbl_extend("force", opts, { desc = "Editor: Move Line Up"   }))
+  map("v", "<M-j>", ":m .+1<CR>==",      vim.tbl_extend("force", opts, { desc = "Editor: Move Line Down" }))
+  map("v", "<M-k>", ":m .-2<CR>==",      vim.tbl_extend("force", opts, { desc = "Editor: Move Line Up"   }))
+  map("x", "J",     ":move '>+1<CR>gv-gv", vim.tbl_extend("force", opts, { desc = "Editor: Move Block Down" }))
+  map("x", "K",     ":move '<-2<CR>gv-gv", vim.tbl_extend("force", opts, { desc = "Editor: Move Block Up"   }))
+  map("x", "<M-j>", ":move '>+1<CR>gv-gv", vim.tbl_extend("force", opts, { desc = "Editor: Move Block Down" }))
+  map("x", "<M-k>", ":move '<-2<CR>gv-gv", vim.tbl_extend("force", opts, { desc = "Editor: Move Block Up"   }))
 
-  -- Better paste in visual mode
-  map("v", "p", '"_dP', opts)
+  -- ── Better paste ──────────────────────────────────────────────────────────
+  map("v", "p", '"_dP', vim.tbl_extend("force", opts, { desc = "Editor: Paste Without Yank" }))
+
+  -- ── Keymap help ───────────────────────────────────────────────────────────
+  map("n", "?", function()
+    require("plugins.keymaps.help").open()
+  end, vim.tbl_extend("force", opts, { desc = "Editor: Keymap Help" }))
 
   -- ── chromatic.nvim (<leader>T*) ───────────────────────────────────────────
-  map("n", "<leader>Tn", "<cmd>ChromaticNext<cr>",        vim.tbl_extend("force", opts, { desc = "Theme: new random" }))
-  map("n", "<leader>Tc", "<cmd>ChromaticConfig<cr>",      vim.tbl_extend("force", opts, { desc = "Theme: settings picker" }))
-  map("n", "<leader>Td", "<cmd>ChromaticMode dark<cr>",   vim.tbl_extend("force", opts, { desc = "Theme: dark mode (persisted)" }))
-  map("n", "<leader>Tl", "<cmd>ChromaticMode light<cr>",  vim.tbl_extend("force", opts, { desc = "Theme: light mode (persisted)" }))
-  map("n", "<leader>Ta", "<cmd>ChromaticMode any<cr>",    vim.tbl_extend("force", opts, { desc = "Theme: any mode (persisted)" }))
-  map("n", "<leader>Ti", "<cmd>ChromaticInfo<cr>",        vim.tbl_extend("force", opts, { desc = "Theme: info" }))
+  map("n", "<leader>Tn", "<cmd>ChromaticNext<cr>",        vim.tbl_extend("force", opts, { desc = "Theme: Random Next"          }))
+  map("n", "<leader>Tc", "<cmd>ChromaticConfig<cr>",      vim.tbl_extend("force", opts, { desc = "Theme: Settings Picker"      }))
+  map("n", "<leader>Td", "<cmd>ChromaticMode dark<cr>",   vim.tbl_extend("force", opts, { desc = "Theme: Set Dark Mode"        }))
+  map("n", "<leader>Tl", "<cmd>ChromaticMode light<cr>",  vim.tbl_extend("force", opts, { desc = "Theme: Set Light Mode"       }))
+  map("n", "<leader>Ta", "<cmd>ChromaticMode any<cr>",    vim.tbl_extend("force", opts, { desc = "Theme: Set Any Mode"         }))
+  map("n", "<leader>Ti", "<cmd>ChromaticInfo<cr>",        vim.tbl_extend("force", opts, { desc = "Theme: Info"                 }))
 end
 
 return M

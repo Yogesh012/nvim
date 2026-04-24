@@ -2,8 +2,8 @@ return {
   {
     "numToStr/Comment.nvim",
     keys = {
-      { "gc", mode = { "n", "v" }, desc = "Comment toggle" },
-      { "gb", mode = { "n", "v" }, desc = "Comment toggle blockwise" },
+      { "gc", mode = { "n", "v" }, desc = "Editor: Comment Toggle"           },
+      { "gb", mode = { "n", "v" }, desc = "Editor: Comment Toggle Blockwise" },
     },
     config = function()
       require("plugins.comment").setup()
