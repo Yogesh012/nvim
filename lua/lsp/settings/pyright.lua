@@ -1,4 +1,13 @@
 return {
+	root_dir = function(fname)
+		return vim.fs.root(fname, {
+			"pyrightconfig.json",
+			"pyproject.toml",
+			"setup.py",
+			"setup.cfg",
+			".git",
+		})
+	end,
 	settings = {
 		python = {
 			analysis = {
