@@ -35,7 +35,7 @@ function M.setup()
 		local opt_local = vim.opt_local
 		apply_buffer_defaults(opt_local)
 	end
-	
+
 	vim.opt.hlsearch = true
 	vim.opt.ignorecase = true
 	vim.opt.pumheight = 10
@@ -53,40 +53,39 @@ function M.setup()
 	vim.opt.clipboard:append("unnamedplus")
 	vim.opt.shortmess:append("c")
 
-	-- Folding (Treesitter-based)
-	vim.opt.foldmethod = "expr"
-	vim.opt.foldexpr = "v:lua.vim.treesitter.foldexpr()"
-	vim.opt.foldenable = false
-	vim.opt.foldlevel = 99
-	vim.opt.foldlevelstart = 99
-	vim.opt.foldcolumn = "auto:1"
+	-- Folding (managed by nvim-ufo; ufo sets foldmethod/foldexpr itself)
+	vim.opt.foldenable = true -- ufo requires this to be on
+	vim.opt.foldlevel = 99 -- start fully open
+	vim.opt.foldlevelstart = 99 -- open on file enter
+	vim.opt.foldcolumn = "1" -- non-zero required by ufo; statuscol renders it cleanly
 	vim.opt.fillchars = {
-		fold = "─",
-		foldopen = "▼",
-		foldclose = "▶",
+		fold = " ",
+		foldopen = "",
+		foldclose = "",
 		foldsep = " ",
 	}
-	vim.opt.statuscolumn = "%s%=%{v:relnum?v:relnum:v:lnum} %C"
 
 	vim.g.python_recommended_style = 0
 	vim.g.python_pep8_indent = 0
-	
+
 	-- Prevent Vim's python indenter from mathematically doubling the shiftwidth (2x2=4) inside parameters
-	vim.g.pyindent_open_paren = '&sw'
-	vim.g.pyindent_nested_paren = '&sw'
-	vim.g.pyindent_continue = '&sw'
+	vim.g.pyindent_open_paren = "&sw"
+	vim.g.pyindent_nested_paren = "&sw"
+	vim.g.pyindent_continue = "&sw"
 	vim.g.pyindent_disable_paren_align = 1
 
 	vim.cmd([[filetype plugin indent on]])
 
 	-- Custom fold text (shows function name and line count)
-	vim.opt.foldtext = "v:lua.CustomFoldText()"
+	-- vim.opt.foldtext = "v:lua.CustomFoldText()"
 end
 
 -- Custom fold text function
 function _G.CustomFoldText()
 	local line = vim.fn.getline(vim.v.foldstart)
-	if not line then return "" end
+	if not line then
+		return ""
+	end
 
 	local line_count = vim.v.foldend - vim.v.foldstart + 1
 	local indent = string.rep(" ", vim.fn.indent(vim.v.foldstart))

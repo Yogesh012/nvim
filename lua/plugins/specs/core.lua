@@ -53,4 +53,14 @@ return {
       require("plugins.project").setup()
     end,
   },
+
+  -- ── Folding: VSCode-like LSP → Treesitter provider chain ──────────────────
+  {
+    "kevinhwang91/nvim-ufo",
+    event        = { "BufReadPost", "BufNewFile" },
+    dependencies = { "kevinhwang91/promise-async" },
+    config = function()
+      require("plugins.ufo").setup()
+    end,
+  },
 }

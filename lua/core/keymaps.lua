@@ -82,6 +82,19 @@ function M.setup()
   map("n", "<leader>Tl", "<cmd>ChromaticMode light<cr>",  vim.tbl_extend("force", opts, { desc = "Theme: Set Light Mode"       }))
   map("n", "<leader>Ta", "<cmd>ChromaticMode any<cr>",    vim.tbl_extend("force", opts, { desc = "Theme: Set Any Mode"         }))
   map("n", "<leader>Ti", "<cmd>ChromaticInfo<cr>",        vim.tbl_extend("force", opts, { desc = "Theme: Info"                 }))
+
+  -- ── Folds (nvim-ufo) ──────────────────────────────────────────────────────
+  map("n", "zR", function() require("ufo").openAllFolds()  end, vim.tbl_extend("force", opts, { desc = "Fold: Open All"         }))
+  map("n", "zM", function() require("ufo").closeAllFolds() end, vim.tbl_extend("force", opts, { desc = "Fold: Close All"        }))
+  map("n", "zr", function() require("ufo").openFoldsExceptKinds() end, vim.tbl_extend("force", opts, { desc = "Fold: Open Level"  }))
+  map("n", "zm", function() require("ufo").closeFoldsWith() end, vim.tbl_extend("force", opts, { desc = "Fold: Close Level"      }))
+  map("n", "zp", function()
+    local winid = require("ufo").peekFoldedLinesUnderCursor()
+    if not winid then
+      -- No fold under cursor → fall back to LSP hover
+      vim.lsp.buf.hover()
+    end
+  end, vim.tbl_extend("force", opts, { desc = "Fold: Peek / Hover" }))
 end
 
 return M
