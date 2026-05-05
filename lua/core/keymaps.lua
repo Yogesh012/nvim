@@ -95,6 +95,27 @@ function M.setup()
       vim.lsp.buf.hover()
     end
   end, vim.tbl_extend("force", opts, { desc = "Fold: Peek / Hover" }))
+
+  -- zC: collapse to function outline — closes only depth-1 folds (functions /
+  -- top-level classes), leaving all inner content unfolded so opening any fold
+  -- immediately shows the full body without nested folds.
+  map("n", "zC", function()
+    require("ufo").openAllFolds()
+    vim.schedule(function()
+      local n = vim.api.nvim_buf_line_count(0)
+      for i = 1, n do
+        local cur  = vim.fn.foldlevel(i)
+        local prev = i > 1 and vim.fn.foldlevel(i - 1) or 0
+        if cur == 1 and prev == 0 then
+          vim.fn.cursor(i, 1)
+          vim.cmd("normal! zc")
+        end
+      end
+    end)
+  end, vim.tbl_extend("force", opts, { desc = "Fold: Outline (depth-1 only)" }))
+
+  -- zO: recursively open the fold under the cursor and every nested fold inside it.
+  -- map("n", "zO", "zO", vim.tbl_extend("force", opts, { desc = "Fold: Open recursively" }))
 end
 
 return M

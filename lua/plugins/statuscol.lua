@@ -19,9 +19,9 @@ function M.setup()
   local builtin = require("statuscol.builtin")
 
   statuscol.setup({
-    -- -- Let statuscol own the statuscolumn option.
+    -- Let statuscol own the statuscolumn option.
     setopt   = true,
-    -- -- Neovim ≥ 0.10 compatible relnum / number awareness.
+    -- Neovim ≥ 0.10 compatible relnum / number awareness.
     -- relculright = true,
     ft_ignore = {"NvimTree", "TelescopePrompt"},
 

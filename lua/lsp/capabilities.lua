@@ -26,4 +26,10 @@ M.textDocument.inlayHint = {
 	},
 }
 
+-- Required by nvim-ufo: without this, LSP servers won't send foldingRange data
+M.textDocument.foldingRange = {
+	dynamicRegistration = false,
+	lineFoldingOnly = true,
+}
+
 return M

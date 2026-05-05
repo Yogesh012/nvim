@@ -81,19 +81,19 @@ function M.setup()
 end
 
 -- Custom fold text function
-function _G.CustomFoldText()
-	local line = vim.fn.getline(vim.v.foldstart)
-	if not line then
-		return ""
-	end
+-- function _G.CustomFoldText()
+-- 	local line = vim.fn.getline(vim.v.foldstart)
+-- 	if not line then
+-- 		return ""
+-- 	end
 
-	local line_count = vim.v.foldend - vim.v.foldstart + 1
-	local indent = string.rep(" ", vim.fn.indent(vim.v.foldstart))
+-- 	local line_count = vim.v.foldend - vim.v.foldstart + 1
+-- 	local indent = string.rep(" ", vim.fn.indent(vim.v.foldstart))
 
-	-- Clean up the line (remove leading whitespace and comments)
-	line = line:gsub("^%s*", "")
+-- 	-- Clean up the line (remove leading whitespace and comments)
+-- 	line = line:gsub("^%s*", "")
 
-	return string.format("%s  %s  (%d lines)", indent, line, line_count)
-end
+-- 	return string.format("%s  %s  (%d lines)", indent, line, line_count)
+-- end
 
 return M

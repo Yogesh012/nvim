@@ -43,17 +43,22 @@ local function fold_virt_text_handler(virt_text, lnum, end_lnum, width, truncate
 end
 
 -- ── Provider selector ────────────────────────────────────────────────────────
--- Returns the list of providers to try in order for each buffer.
--- Filetype overrides can be added here as needed.
-local function provider_selector(_, filetype, _)
-  -- For files where LSP rarely provides foldingRange (e.g. plain text),
-  -- skip straight to indent.
-  return {"treesitter", "indent"}
-  -- local ts_only = { help = true, text = true, markdown = true }
-  -- if ts_only[filetype] then
-  --   return { "treesitter", "indent" }
-  -- end
-  -- return { "lsp", "treesitter" }
+-- Returns a custom function that chains lsp → treesitter → indent by catching
+-- UfoFallbackException at each step.  This bypasses the 2-provider string limit
+-- while still hitting indent for buffers with no treesitter parser.
+local function provider_selector(_, _, _)
+  return function(bufnr)
+    local function fallback(err, next_provider)
+      if type(err) == "string" and err:match("UfoFallbackException") then
+        return require("ufo").getFolds(bufnr, next_provider)
+      end
+      return require("promise-async").reject(err)
+    end
+
+    return require("ufo").getFolds(bufnr, "lsp")
+      :catch(function(err) return fallback(err, "treesitter") end)
+      :catch(function(err) return fallback(err, "indent") end)
+  end
 end
 
 function M.setup()
