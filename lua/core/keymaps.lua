@@ -82,6 +82,40 @@ function M.setup()
   map("n", "<leader>Tl", "<cmd>ChromaticMode light<cr>",  vim.tbl_extend("force", opts, { desc = "Theme: Set Light Mode"       }))
   map("n", "<leader>Ta", "<cmd>ChromaticMode any<cr>",    vim.tbl_extend("force", opts, { desc = "Theme: Set Any Mode"         }))
   map("n", "<leader>Ti", "<cmd>ChromaticInfo<cr>",        vim.tbl_extend("force", opts, { desc = "Theme: Info"                 }))
+
+  -- ── Folds (nvim-ufo) ──────────────────────────────────────────────────────
+  map("n", "zR", function() require("ufo").openAllFolds()  end, vim.tbl_extend("force", opts, { desc = "Fold: Open All"         }))
+  map("n", "zM", function() require("ufo").closeAllFolds() end, vim.tbl_extend("force", opts, { desc = "Fold: Close All"        }))
+  map("n", "zr", function() require("ufo").openFoldsExceptKinds() end, vim.tbl_extend("force", opts, { desc = "Fold: Open Level"  }))
+  map("n", "zm", function() require("ufo").closeFoldsWith() end, vim.tbl_extend("force", opts, { desc = "Fold: Close Level"      }))
+  map("n", "zp", function()
+    local winid = require("ufo").peekFoldedLinesUnderCursor()
+    if not winid then
+      -- No fold under cursor → fall back to LSP hover
+      vim.lsp.buf.hover()
+    end
+  end, vim.tbl_extend("force", opts, { desc = "Fold: Peek / Hover" }))
+
+  -- zC: collapse to function outline — closes only depth-1 folds (functions /
+  -- top-level classes), leaving all inner content unfolded so opening any fold
+  -- immediately shows the full body without nested folds.
+  map("n", "zC", function()
+    require("ufo").openAllFolds()
+    vim.schedule(function()
+      local n = vim.api.nvim_buf_line_count(0)
+      for i = 1, n do
+        local cur  = vim.fn.foldlevel(i)
+        local prev = i > 1 and vim.fn.foldlevel(i - 1) or 0
+        if cur == 1 and prev == 0 then
+          vim.fn.cursor(i, 1)
+          vim.cmd("normal! zc")
+        end
+      end
+    end)
+  end, vim.tbl_extend("force", opts, { desc = "Fold: Outline (depth-1 only)" }))
+
+  -- zO: recursively open the fold under the cursor and every nested fold inside it.
+  -- map("n", "zO", "zO", vim.tbl_extend("force", opts, { desc = "Fold: Open recursively" }))
 end
 
 return M

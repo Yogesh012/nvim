@@ -3,3 +3,5 @@ require("core.keymaps").set_leader()
 
 require("core.init")
 require("plugins.lazy")
+
+vim.g.python3_host_prog = vim.fn.exepath("python3")

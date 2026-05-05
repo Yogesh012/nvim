@@ -77,4 +77,13 @@ return {
 			require("plugins.render_markdown").setup()
 		end,
 	},
+
+	-- ── Statuscolumn: clean fold chevrons, no depth numbers ─────────────────
+	{
+		"luukvbaal/statuscol.nvim",
+		event = { "BufReadPost", "BufNewFile" },
+		config = function()
+			require("plugins.statuscol").setup()
+		end,
+	},
 }

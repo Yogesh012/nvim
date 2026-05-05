@@ -41,3 +41,4 @@ luac.out
 .amazonq
 .context
 *.DS_Store
+.claude
