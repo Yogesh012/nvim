@@ -15,6 +15,15 @@ function M.setup(client, bufnr)
       buffer = bufnr,
       callback = vim.lsp.buf.clear_references,
     })
+
+    vim.api.nvim_create_autocmd("LspDetach", {
+      group = vim.api.nvim_create_augroup("LspDocumentHighlightDetach", { clear = true }),
+      buffer = bufnr,
+      callback = function()
+        vim.lsp.buf.clear_references()
+        vim.api.nvim_clear_autocmds({ group = "LspDocumentHighlight", buffer = bufnr })
+      end,
+    })
   end
 
 
