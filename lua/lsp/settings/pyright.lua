@@ -1,19 +1,12 @@
 return {
-	on_init = function(client)
-		local root = client.config.root_dir
-		if root then
-			client.config.settings.python.analysis.extraPaths = { root }
-			client:notify("workspace/didChangeConfiguration", {
-				settings = client.config.settings,
-			})
-		end
+	before_init = function(_, config)
+		config.settings.python.analysis.extraPaths = { config.root_dir or vim.fn.getcwd() }
 	end,
 	settings = {
 		python = {
 			analysis = {
 				-- Type checking
 				typeCheckingMode = "basic",
-				extraPaths = {},
 
 				-- Auto-imports
 				autoImportCompletions = true,
