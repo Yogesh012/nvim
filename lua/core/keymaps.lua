@@ -28,8 +28,16 @@ function M.setup()
       if b == cur then cur_idx = i break end
     end
 
+    local function delete_buf(buf)
+      if vim.bo[buf].modified then
+        vim.notify("Unsaved changes — save with <leader>w or force-close with <leader>Q", vim.log.levels.WARN)
+        return
+      end
+      vim.api.nvim_buf_delete(buf, { force = false })
+    end
+
     if cur_idx == nil then
-      vim.api.nvim_buf_delete(cur, { force = false })
+      delete_buf(cur)
       return
     end
 
@@ -42,8 +50,12 @@ function M.setup()
       end
     end
 
-    vim.api.nvim_buf_delete(cur, { force = false })
+    delete_buf(cur)
   end, vim.tbl_extend("force", opts, { desc = "Editor: Close Buffer" }))
+
+  map("n", "<leader>Q", function()
+    vim.api.nvim_buf_delete(vim.api.nvim_get_current_buf(), { force = true })
+  end, vim.tbl_extend("force", opts, { desc = "Editor: Force Close Buffer" }))
 
   -- Toggle between current and last buffer
   map("n", "<leader><leader>", "<C-^>", vim.tbl_extend("force", opts, { desc = "Editor: Toggle Last Buffer" }))

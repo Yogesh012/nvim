@@ -6,12 +6,12 @@ function M.setup(client, bufnr)
   local themes    = require("telescope.themes")
 
   -- ── Core LSP ──────────────────────────────────────────────────────────────
-  vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action,  { buffer = bufnr, desc = "LSP: Code Action"    })
-  vim.keymap.set("v", "<leader>ca", vim.lsp.buf.code_action,  { buffer = bufnr, desc = "LSP: Code Action"    })
-  vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename,       { buffer = bufnr, desc = "LSP: Rename Symbol"  })
-  vim.keymap.set("n", "K",          vim.lsp.buf.hover,        vim.tbl_extend("force", opts, { desc = "LSP: Hover Docs"        }))
-  vim.keymap.set("n", "gD",         vim.lsp.buf.declaration,  vim.tbl_extend("force", opts, { desc = "LSP: Go to Declaration" }))
-  vim.keymap.set("n", "gs",         vim.lsp.buf.signature_help, vim.tbl_extend("force", opts, { desc = "LSP: Signature Help" }))
+  vim.keymap.set("n", "gca",        vim.lsp.buf.code_action,    vim.tbl_extend("force", opts, { desc = "LSP: Code Action"     }))
+  vim.keymap.set("v", "gca",        vim.lsp.buf.code_action,    vim.tbl_extend("force", opts, { desc = "LSP: Code Action"     }))
+  vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename,         vim.tbl_extend("force", opts, { desc = "LSP: Rename Symbol"   }))
+  vim.keymap.set("n", "K",          vim.lsp.buf.hover,          vim.tbl_extend("force", opts, { desc = "LSP: Hover Docs"      }))
+  vim.keymap.set("n", "gD",         vim.lsp.buf.declaration,    vim.tbl_extend("force", opts, { desc = "LSP: Go to Declaration" }))
+  vim.keymap.set("n", "gS",         vim.lsp.buf.signature_help, vim.tbl_extend("force", opts, { desc = "LSP: Signature Help"  }))
 
   -- ── Diagnostics ───────────────────────────────────────────────────────────
   vim.keymap.set("n", "gj", function()
@@ -55,24 +55,18 @@ function M.setup(client, bufnr)
     print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
   end, vim.tbl_extend("force", opts, { desc = "LSP: List Workspace Folders" }))
 
-  -- ── Toggles ───────────────────────────────────────────────────────────────
-  vim.keymap.set("n", "<leader>tt", require("lsp.utils").toggle_virtual_text,
-    { desc = "LSP: Toggle Virtual Text" })
-  vim.keymap.set("n", "<leader>th", require("lsp.utils").toggle_inlay_hints,
-    { desc = "LSP: Toggle Inlay Hints" })
+  -- ── LSP toggles (<leader>l group) ────────────────────────────────────────
+  vim.keymap.set("n", "<leader>lv", require("lsp.utils").toggle_virtual_text,
+    vim.tbl_extend("force", opts, { desc = "LSP: Toggle Virtual Text" }))
+  vim.keymap.set("n", "<leader>lh", require("lsp.utils").toggle_inlay_hints,
+    vim.tbl_extend("force", opts, { desc = "LSP: Toggle Inlay Hints" }))
 
   -- ── Diagnostics lists ─────────────────────────────────────────────────────
   vim.keymap.set("n", "<leader>dq", vim.diagnostic.setqflist,
-    { buffer = bufnr, desc = "LSP: Diagnostics → Quickfix" })
+    vim.tbl_extend("force", opts, { desc = "LSP: Diagnostics → Quickfix" }))
   vim.keymap.set("n", "<leader>dl", vim.diagnostic.setloclist,
-    { buffer = bufnr, desc = "LSP: Diagnostics → Loclist" })
+    vim.tbl_extend("force", opts, { desc = "LSP: Diagnostics → Loclist" }))
 
-  -- ── Format ────────────────────────────────────────────────────────────────
-  vim.keymap.set("n", "gf", function()
-    vim.lsp.buf.format({ async = true })
-  end, vim.tbl_extend("force", opts, { desc = "LSP: Format Buffer" }))
-
-  vim.cmd([[ command! Format execute 'lua vim.lsp.buf.format({ async = true })' ]])
 end
 
 return M

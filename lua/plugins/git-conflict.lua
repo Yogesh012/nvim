@@ -20,35 +20,32 @@ function M.setup()
   map("n", "]x", "<cmd>GitConflictNextConflict<cr>", { desc = "Git: Conflict – Next" })
   map("n", "[x", "<cmd>GitConflictPrevConflict<cr>", { desc = "Git: Conflict – Previous" })
 
-  -- Resolution
-  map("n", "<leader>co", "<cmd>GitConflictChooseOurs<cr>", { desc = "Git: Conflict – Choose Ours" })
-  map("n", "<leader>ct", "<cmd>GitConflictChooseTheirs<cr>", { desc = "Git: Conflict – Choose Theirs" })
-  map("n", "<leader>cb", "<cmd>GitConflictChooseBoth<cr>", { desc = "Git: Conflict – Choose Both" })
-  map("n", "<leader>cn", "<cmd>GitConflictChooseNone<cr>", { desc = "Git: Conflict – Choose None" })
+  -- Resolution  (<leader>x = conflict domain, mirrors ]x/[x navigation)
+  map("n", "<leader>xo", "<cmd>GitConflictChooseOurs<cr>",   { desc = "Conflict: Choose Ours"   })
+  map("n", "<leader>xt", "<cmd>GitConflictChooseTheirs<cr>", { desc = "Conflict: Choose Theirs" })
+  map("n", "<leader>xb", "<cmd>GitConflictChooseBoth<cr>",   { desc = "Conflict: Choose Both"   })
+  map("n", "<leader>xn", "<cmd>GitConflictChooseNone<cr>",   { desc = "Conflict: Choose None"   })
 
-  -- List conflicts (Telescope with ivy theme)
-  map("n", "<leader>cx", function()
+  -- List conflicts
+  map("n", "<leader>xx", function()
     require("telescope.builtin").quickfix(require("telescope.themes").get_ivy({
       prompt_title = "Git Conflicts",
       previewer = false,
     }))
     vim.cmd("GitConflictListQf")
-  end, { desc = "Git: Conflict – List All" })
+  end, { desc = "Conflict: List All" })
 
-  -- Merge views (manual)
-  map("n", "<leader>gm3", "<cmd>DiffviewOpen<cr>", { desc = "Git: 3-Way Merge View" })
+  -- Merge views
   map("n", "<leader>gm", function()
-    -- Check if in merge state
     local merge_head = vim.fn.findfile(".git/MERGE_HEAD", ".;")
     if merge_head ~= "" then
-      -- In merge: show 2-way diff (ours vs theirs)
       vim.cmd("DiffviewOpen HEAD...MERGE_HEAD")
     else
-      -- Not in merge: show regular diff
       vim.notify("Not in merge state. Use :DiffviewOpen for regular diff.", vim.log.levels.WARN)
     end
   end, { desc = "Git: 2-Way Merge View" })
-  map("n", "<leader>gmc", "<cmd>DiffviewClose<cr>", { desc = "Git: Close Merge View" })
+  map("n", "<leader>gM", "<cmd>DiffviewOpen<cr>",  { desc = "Git: 3-Way Merge View" })
+  map("n", "<leader>gq", "<cmd>DiffviewClose<cr>", { desc = "Git: Close Diffview"   })
 end
 
 return M

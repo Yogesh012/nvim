@@ -44,7 +44,7 @@ return {
 		event = "VeryLazy",
 		dependencies = { "nvim-tree/nvim-web-devicons" },
 		config = function()
-			require("plugins._lualine").setup()
+			require("plugins.lualine").setup()
 		end,
 	},
 
@@ -54,7 +54,7 @@ return {
 		keys = {
 			{ "<Tab>", "<cmd>BufferLineCycleNext<cr>", desc = "Buffer: Next" },
 			{ "<S-Tab>", "<cmd>BufferLineCyclePrev<cr>", desc = "Buffer: Previous" },
-			{ "<leader>bp", "<cmd>BufferLinePick<cr>", desc = "Buffer: Pick" },
+			{ "<leader>fB", "<cmd>BufferLinePick<cr>", desc = "Find: Buffer Pick" },
 		},
 		dependencies = { "nvim-tree/nvim-web-devicons" },
 		config = function()

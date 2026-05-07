@@ -6,28 +6,55 @@ function M.setup()
   local action_state = require("telescope.actions.state")
   local action_layout = require("telescope.actions.layout")
 
-  local tab = function(prompt_bufnr)
-    local current_picker = action_state.get_current_picker(prompt_bufnr)
-    if type(current_picker.all_previewers) == "table" and current_picker.all_previewers[1] then
-      local pstate = current_picker.all_previewers[1].state
-      if pstate then
-        actions.move_selection_previous(prompt_bufnr)
-        return
-      end
-    end
-    actions.move_selection_next(prompt_bufnr)
+  -- True when the prompt bar sits above the results (e.g. dropdown).
+  -- Measured directly from window positions so it works for any layout/theme.
+  local function prompt_at_top(prompt_bufnr)
+    local picker = action_state.get_current_picker(prompt_bufnr)
+    local prompt_row  = vim.api.nvim_win_get_position(picker.prompt_win)[1]
+    local results_row = vim.api.nvim_win_get_position(picker.results_win)[1]
+    return prompt_row <= results_row
   end
 
-  local shift_tab = function(prompt_bufnr)
-    local current_picker = action_state.get_current_picker(prompt_bufnr)
-    if type(current_picker.all_previewers) == "table" and current_picker.all_previewers[1] then
-      local pstate = current_picker.all_previewers[1].state
-      if pstate then
-        actions.move_selection_next(prompt_bufnr)
-        return
-      end
+  -- True when a previewer window is initialised and active.
+  local function has_preview(prompt_bufnr)
+    local picker = action_state.get_current_picker(prompt_bufnr)
+    local p = type(picker.all_previewers) == "table" and picker.all_previewers[1]
+    return p and p.state ~= nil
+  end
+
+  -- Navigate results away from the prompt bar (the "natural next" direction).
+  local nav_next = function(prompt_bufnr)
+    if prompt_at_top(prompt_bufnr) then
+      actions.move_selection_next(prompt_bufnr)
+    else
+      actions.move_selection_previous(prompt_bufnr)
     end
-    actions.move_selection_previous(prompt_bufnr)
+  end
+
+  -- Navigate results toward the prompt bar.
+  local nav_prev = function(prompt_bufnr)
+    if prompt_at_top(prompt_bufnr) then
+      actions.move_selection_previous(prompt_bufnr)
+    else
+      actions.move_selection_next(prompt_bufnr)
+    end
+  end
+
+  -- j/k: scroll preview when one exists, navigate results otherwise.
+  local j_action = function(prompt_bufnr)
+    if has_preview(prompt_bufnr) then
+      actions.preview_scrolling_down(prompt_bufnr)
+    else
+      actions.move_selection_next(prompt_bufnr)
+    end
+  end
+
+  local k_action = function(prompt_bufnr)
+    if has_preview(prompt_bufnr) then
+      actions.preview_scrolling_up(prompt_bufnr)
+    else
+      actions.move_selection_previous(prompt_bufnr)
+    end
   end
 
   telescope.setup({
@@ -36,11 +63,22 @@ function M.setup()
       selection_caret = " ",
       path_display = { "smart" },
       border = true,
-      dynamic_preview_title = false,
-      short_path = true,
+      dynamic_preview_title = true,
       wrap_results = true,
       layout_config = {
         scroll_speed = 1,
+        horizontal = {
+          preview_width = 0.58,
+        },
+        vertical = {
+          preview_height = 0.65,
+        },
+      },
+      file_ignore_patterns = {
+        "node_modules",
+        "%.lock",
+        ".git/",
+        "__pycache__",
       },
 
       mappings = {
@@ -58,11 +96,10 @@ function M.setup()
           ["<C-d>"] = actions.preview_scrolling_down,
           ["<PageUp>"] = actions.results_scrolling_up,
           ["<PageDown>"] = actions.results_scrolling_down,
-          ["<Tab>"] = tab,
-          ["<S-Tab>"] = shift_tab,
+          ["<Tab>"] = nav_next,
+          ["<S-Tab>"] = nav_prev,
           ["<C-q>"] = actions.send_to_qflist + actions.open_qflist,
           ["<M-q>"] = actions.send_selected_to_qflist + actions.open_qflist,
-          ["<C-l>"] = actions.complete_tag,
           ["<C-_>"] = actions.which_key,
           ["<M-p>"] = action_layout.toggle_preview,
           ["<esc>"] = actions.close,
@@ -75,14 +112,14 @@ function M.setup()
           ["<C-t>"] = actions.select_tab,
           ["<C-q>"] = actions.send_to_qflist + actions.open_qflist,
           ["<M-q>"] = actions.send_selected_to_qflist + actions.open_qflist,
-          ["<Tab>"] = tab,
-          ["f"] = tab,
-          ["<S-Tab>"] = shift_tab,
-          ["d"] = shift_tab,
-          ["<Down>"] = actions.preview_scrolling_down,
-          ["<Up>"] = actions.preview_scrolling_up,
-          ["j"] = actions.preview_scrolling_down,
-          ["k"] = actions.preview_scrolling_up,
+          ["<Tab>"] = nav_next,
+          ["<S-Tab>"] = nav_prev,
+          ["<Down>"] = nav_next,
+          ["<Up>"] = nav_prev,
+          ["f"] = nav_next,
+          ["d"] = nav_prev,
+          ["j"] = j_action,
+          ["k"] = k_action,
           ["gg"] = actions.move_to_top,
           ["G"] = actions.move_to_bottom,
           ["zz"] = actions.move_to_middle,
@@ -110,15 +147,9 @@ function M.setup()
 
       git_status = {
         mappings = {
-          i = {
-            ["f"] = tab,
-            ["<S-Tab>"] = shift_tab,
-            ["d"] = shift_tab,
-          },
           n = {
-            ["f"] = tab,
-            ["<S-Tab>"] = shift_tab,
-            ["d"] = shift_tab,
+            ["f"] = nav_next,
+            ["d"] = nav_prev,
           },
         },
 
@@ -160,26 +191,12 @@ function M.setup()
         override_file_sorter = true,
         case_mode = "smart_case",
       },
-    },
-
-    file_ignore_patterns = {
-      "node_modules",
-      "%.lock",
-      ".git/",
-      "__pycache__",
-    },
-
-    glyph = {
-      action = function(glyph)
-        -- argument glyph is a table.
-        -- {name="", value="", category="", description=""}
-
-        vim.fn.setreg("*", glyph.value)
-        print([[Press p or "*p to paste this glyph]] .. glyph.value)
-
-        -- insert glyph when picked
-        -- vim.api.nvim_put({ glyph.value }, 'c', false, true)
-      end,
+      glyph = {
+        action = function(glyph)
+          vim.fn.setreg("*", glyph.value)
+          print([[Press p or "*p to paste this glyph ]] .. glyph.value)
+        end,
+      },
     },
   })
 
