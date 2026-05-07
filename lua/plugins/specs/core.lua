@@ -11,7 +11,7 @@ return {
       "ghassan0/telescope-glyph.nvim",
     },
     config = function()
-      require("plugins._telescope").setup()
+      require("plugins.telescope").setup()
       require("plugins.keymaps.telescope").setup()
     end,
   },
@@ -42,7 +42,7 @@ return {
       "windwp/nvim-ts-autotag",
     },
     config = function()
-      require("plugins.treesitter_v3").setup()
+      require("plugins.treesitter").setup()
     end,
   },
 

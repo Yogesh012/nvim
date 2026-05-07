@@ -44,7 +44,7 @@ return {
 		event = "VeryLazy",
 		dependencies = { "nvim-tree/nvim-web-devicons" },
 		config = function()
-			require("plugins._lualine").setup()
+			require("plugins.lualine").setup()
 		end,
 	},
 
