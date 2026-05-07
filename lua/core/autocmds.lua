@@ -96,6 +96,28 @@ vim.api.nvim_create_autocmd("LspAttach", {
 })
 
 
+-- ── CMP Ghost Text Highlight ─────────────────────────────────────────────────
+-- Re-applied on every ColorScheme so chromatic.nvim's theme rotation doesn't
+-- leave ghost text invisible or unexpectedly styled.
+-- Blends Normal fg toward Normal bg at ~25% opacity, matching VS Code's faint
+-- ghost text appearance regardless of which theme is active.
+vim.api.nvim_create_autocmd("ColorScheme", {
+  group = vim.api.nvim_create_augroup("CmpGhostTextHl", { clear = true }),
+  callback = function()
+    local normal = vim.api.nvim_get_hl(0, { name = "Normal", link = false })
+    local fg = normal.fg or 0xc0c0c0
+    local bg = normal.bg or 0x1e1e1e
+    local function blend(c1, c2, a)
+      local r1, g1, b1 = math.floor(c1/0x10000)%0x100, math.floor(c1/0x100)%0x100, c1%0x100
+      local r2, g2, b2 = math.floor(c2/0x10000)%0x100, math.floor(c2/0x100)%0x100, c2%0x100
+      return (math.floor(r1*a+r2*(1-a)+.5))*0x10000
+           + (math.floor(g1*a+g2*(1-a)+.5))*0x100
+           +  math.floor(b1*a+b2*(1-a)+.5)
+    end
+    vim.api.nvim_set_hl(0, "CmpGhostText", { fg = blend(fg, bg, 0.25), italic = true })
+  end,
+})
+
 -- ── Dynamic High Contrast Search Highlights ─────────────────────────────────
 -- Guarantees clear visibility while randomly picking from aesthetically appealing color pairs.
 vim.api.nvim_create_autocmd("ColorScheme", {
