@@ -124,11 +124,11 @@ vim.api.nvim_create_autocmd("ColorScheme", {
   group = vim.api.nvim_create_augroup("HighContrastSearch", { clear = true }),
   callback = function()
     local themes = {
-      { search = { bg = "#1348d8ff", fg = "#FFFFFF" }, cur = { bg = "#ec7028ff", fg = "#000000" } }, -- Classic Blue & Orange
-      { search = { bg = "#8969dcff", fg = "#FFFFFF" }, cur = { bg = "#8545d3ff", fg = "#000000" } }, -- Deep Purple & Bright Violet
-      { search = { bg = "#1cd4b9ff", fg = "#FFFFFF" }, cur = { bg = "#7DCFFF", fg = "#000000" } }, -- Dark Teal & Neon Cyan
+      { search = { bg = "#1348d8", fg = "#FFFFFF" }, cur = { bg = "#ec7028", fg = "#000000" } }, -- Classic Blue & Orange
+      { search = { bg = "#8969dc", fg = "#FFFFFF" }, cur = { bg = "#8545d3", fg = "#000000" } }, -- Deep Purple & Bright Violet
+      { search = { bg = "#1cd4b9", fg = "#FFFFFF" }, cur = { bg = "#7DCFFF", fg = "#000000" } }, -- Dark Teal & Neon Cyan
       { search = { bg = "#70395D", fg = "#FFFFFF" }, cur = { bg = "#F7768E", fg = "#000000" } }, -- Plum & Bright Coral/Pink
-      { search = { bg = "#668731ff", fg = "#FFFFFF" }, cur = { bg = "#aec733ff", fg = "#000000" } }, -- Olive & Bright Yellow-Green
+      { search = { bg = "#668731", fg = "#FFFFFF" }, cur = { bg = "#aec733", fg = "#000000" } }, -- Olive & Bright Yellow-Green
     }
 
     -- Randomly select a theme pair
