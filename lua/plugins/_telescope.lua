@@ -45,7 +45,7 @@ function M.setup()
     if has_preview(prompt_bufnr) then
       actions.preview_scrolling_down(prompt_bufnr)
     else
-      nav_next(prompt_bufnr)
+      actions.move_selection_next(prompt_bufnr)
     end
   end
 
@@ -53,7 +53,7 @@ function M.setup()
     if has_preview(prompt_bufnr) then
       actions.preview_scrolling_up(prompt_bufnr)
     else
-      nav_prev(prompt_bufnr)
+      actions.move_selection_previous(prompt_bufnr)
     end
   end
 
@@ -63,11 +63,22 @@ function M.setup()
       selection_caret = " ",
       path_display = { "smart" },
       border = true,
-      dynamic_preview_title = false,
-      short_path = true,
+      dynamic_preview_title = true,
       wrap_results = true,
       layout_config = {
         scroll_speed = 1,
+        horizontal = {
+          preview_width = 0.58,
+        },
+        vertical = {
+          preview_height = 0.65,
+        },
+      },
+      file_ignore_patterns = {
+        "node_modules",
+        "%.lock",
+        ".git/",
+        "__pycache__",
       },
 
       mappings = {
@@ -180,26 +191,12 @@ function M.setup()
         override_file_sorter = true,
         case_mode = "smart_case",
       },
-    },
-
-    file_ignore_patterns = {
-      "node_modules",
-      "%.lock",
-      ".git/",
-      "__pycache__",
-    },
-
-    glyph = {
-      action = function(glyph)
-        -- argument glyph is a table.
-        -- {name="", value="", category="", description=""}
-
-        vim.fn.setreg("*", glyph.value)
-        print([[Press p or "*p to paste this glyph]] .. glyph.value)
-
-        -- insert glyph when picked
-        -- vim.api.nvim_put({ glyph.value }, 'c', false, true)
-      end,
+      glyph = {
+        action = function(glyph)
+          vim.fn.setreg("*", glyph.value)
+          print([[Press p or "*p to paste this glyph ]] .. glyph.value)
+        end,
+      },
     },
   })
 

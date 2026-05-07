@@ -10,16 +10,18 @@ function M.setup()
     builtin.find_files(themes.get_dropdown({ previewer = false }))
   end, { desc = "Find: Files (dropdown)" })
 
-  map("n", "<leader>fF", "<cmd>Telescope find_files<cr>",
-    { desc = "Find: Files (with preview)" })
+  map("n", "<leader>fF", function()
+    builtin.find_files()
+  end, { desc = "Find: Files (with preview)" })
 
   map("n", "<leader>fr", function()
     builtin.oldfiles(themes.get_dropdown({ previewer = false }))
   end, { desc = "Find: Recent Files" })
 
   -- ── Search ────────────────────────────────────────────────────────────────
-  map("n", "<leader>fg", "<cmd>Telescope live_grep<cr>",
-    { desc = "Find: Live Grep" })
+  map("n", "<leader>fg", function()
+    builtin.live_grep()
+  end, { desc = "Find: Live Grep" })
 
   map("n", "<leader>f/", function()
     builtin.current_buffer_fuzzy_find({ previewer = false, winblend = 5 })
@@ -43,9 +45,17 @@ function M.setup()
   end, { desc = "Find: Grep in Config" })
 
   -- ── Meta / vim ────────────────────────────────────────────────────────────
-  map("n", "<leader>fb", "<cmd>Telescope buffers<cr>",   { desc = "Find: Buffers"   })
-  map("n", "<leader>fh", "<cmd>Telescope help_tags<cr>", { desc = "Find: Help Tags" })
-  map("n", "<leader>fc", "<cmd>Telescope commands<cr>",  { desc = "Find: Commands"  })
+  map("n", "<leader>fb", function()
+    builtin.buffers(themes.get_dropdown({ previewer = false }))
+  end, { desc = "Find: Buffers" })
+
+  map("n", "<leader>fh", function()
+    builtin.help_tags()
+  end, { desc = "Find: Help Tags" })
+
+  map("n", "<leader>fc", function()
+    builtin.commands()
+  end, { desc = "Find: Commands" })
 
   map("n", "<leader>fl", function()
     builtin.help_tags({ default_text = "lua" })
@@ -72,10 +82,21 @@ function M.setup()
   end, { desc = "Find: Keymaps (raw)" })
 
   -- ── Symbols ───────────────────────────────────────────────────────────────
-  map("n", "<leader>fs", "<cmd>Telescope treesitter<cr>",            { desc = "Find: File Symbols (Treesitter)" })
-  map("n", "<leader>fS", "<cmd>Telescope lsp_document_symbols<cr>",  { desc = "Find: File Symbols (LSP)"       })
-  map("n", "<leader>fw", "<cmd>Telescope lsp_workspace_symbols<cr>", { desc = "Find: Workspace Symbols (LSP)"  })
-  map("n", "<leader>fe", "<cmd>Telescope symbols<cr>",               { desc = "Find: Symbols"                  })
+  map("n", "<leader>fs", function()
+    builtin.treesitter()
+  end, { desc = "Find: File Symbols (Treesitter)" })
+
+  map("n", "<leader>fS", function()
+    builtin.lsp_document_symbols()
+  end, { desc = "Find: File Symbols (LSP)" })
+
+  map("n", "<leader>fw", function()
+    builtin.lsp_workspace_symbols()
+  end, { desc = "Find: Workspace Symbols (LSP)" })
+
+  map("n", "<leader>fe", function()
+    require("telescope").extensions.symbols.symbols()
+  end, { desc = "Find: Symbols" })
 
   -- ── Extensions ────────────────────────────────────────────────────────────
   map("n", "<leader>fP", function()
