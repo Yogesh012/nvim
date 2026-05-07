@@ -54,10 +54,10 @@ function M.setup()
       map("n", "<leader>gs", tb.git_status, "Git: Status")
       map("n", "<leader>gS", tb.git_stash, "Git: Stash")
       
-      -- Diffview (better keymaps)
-      map("n", "<leader>dv", "<cmd>DiffviewOpen<cr>", "Git: Diff View")
-      map("n", "<leader>dh", "<cmd>DiffviewFileHistory<cr>", "Git: Diff History (All)")
-      map("n", "<leader>df", "<cmd>DiffviewFileHistory %<cr>", "Git: Diff History (Current)")
+      -- Diffview
+      map("n", "<leader>gv", "<cmd>DiffviewOpen<cr>", "Git: Diff View")
+      map("n", "<leader>gH", "<cmd>DiffviewFileHistory<cr>", "Git: Diff History (All)")
+      map("n", "<leader>gh", "<cmd>DiffviewFileHistory %<cr>", "Git: Diff History (File)")
     end,
   })
 end

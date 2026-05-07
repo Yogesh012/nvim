@@ -37,12 +37,6 @@ function M.setup()
     }))
   end, { desc = "Find: Config Files" })
 
-  map("n", "<leader>fcg", function()
-    builtin.live_grep({
-      prompt_title = "Grep Neovim Config",
-      cwd          = vim.fn.stdpath("config"),
-    })
-  end, { desc = "Find: Grep in Config" })
 
   -- ── Meta / vim ────────────────────────────────────────────────────────────
   map("n", "<leader>fb", function()
@@ -53,17 +47,9 @@ function M.setup()
     builtin.help_tags()
   end, { desc = "Find: Help Tags" })
 
-  map("n", "<leader>fc", function()
+  map("n", "<leader>fC", function()
     builtin.commands()
   end, { desc = "Find: Commands" })
-
-  map("n", "<leader>fl", function()
-    builtin.help_tags({ default_text = "lua" })
-  end, { desc = "Find: Lua Help Tags" })
-
-  map("n", "<leader>fp", function()
-    builtin.help_tags({ default_text = "python" })
-  end, { desc = "Find: Python Help Tags" })
 
   map("n", "<leader>fk", function()
     builtin.keymaps(themes.get_cursor({
