@@ -1,19 +1,19 @@
 return {
-	root_dir = function(fname)
-		return vim.fs.root(fname, {
-			"pyrightconfig.json",
-			"pyproject.toml",
-			"setup.py",
-			"setup.cfg",
-			".git",
-		})
+	on_init = function(client)
+		local root = client.config.root_dir
+		if root then
+			client.config.settings.python.analysis.extraPaths = { root }
+			client:notify("workspace/didChangeConfiguration", {
+				settings = client.config.settings,
+			})
+		end
 	end,
 	settings = {
 		python = {
 			analysis = {
 				-- Type checking
 				typeCheckingMode = "basic",
-				extraPaths = { "." },
+				extraPaths = {},
 
 				-- Auto-imports
 				autoImportCompletions = true,
